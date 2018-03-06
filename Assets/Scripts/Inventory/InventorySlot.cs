@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 [System.Serializable]
 public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler
 {
+  public GameObject emptyItem;
+
   // Return the item in the inventorySlot, if we don't have one return null
   public GameObject ItemGO
   {
@@ -28,11 +30,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler
 
   //-----------------------------------------------------------------------------------------------------------//
 
-  public ItemGO Item
+  public SlotData Item
   {
     get
     {
-      return ItemGO.GetComponent<ItemGO>();
+      return ItemGO.GetComponent<SlotData>();
     }
   }
 
@@ -63,6 +65,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler
     DragHandler.finishingSlot = this;
   }
 
+  //-----------------------------------------------------------------------------------------------------------//
+
   public void DestroyItem()
   {
     foreach (Transform child in transform)
@@ -72,5 +76,51 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler
         Destroy(child.gameObject);
       }
     }
+  }
+
+  //-----------------------------------------------------------------------------------------------------------//
+
+  public void UpdateSlotVisual()
+  {
+    if (Item.itemCount == 0)
+    {
+      DestroyImmediate(ItemGO);
+    }
+    else
+    {
+      ItemGO.GetComponent<Image>().sprite = Item.item.sprite;
+      ItemGO.GetComponentInChildren<Text>().text = Item.itemCount.ToString();
+    }
+  }
+
+  //-----------------------------------------------------------------------------------------------------------//
+
+  public void UpdateItemCount(int _amount)
+  {
+    Item.itemCount += _amount;
+    UpdateSlotVisual();
+  }
+
+  //-----------------------------------------------------------------------------------------------------------//
+
+  public void CreateNewItem(Item itemToAdd)
+  {
+    GameObject GO = Instantiate(emptyItem);
+    GO.transform.SetParent(transform);
+    GO.transform.localPosition = Vector2.zero;
+    Item.item = itemToAdd;
+    Item.itemCount = 0;
+  }
+
+  //-----------------------------------------------------------------------------------------------------------//
+
+  public void AddItem(int id, int amount)
+  {
+    if (ItemGO == null)
+    {
+      Item _itemToAdd = ItemDatabase.sharedInsatance.FetchItemByID(id);
+      CreateNewItem(_itemToAdd);
+    }
+    UpdateItemCount(amount);
   }
 }

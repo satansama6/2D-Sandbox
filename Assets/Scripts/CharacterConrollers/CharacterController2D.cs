@@ -10,6 +10,9 @@ public class CharacterController2D : PhysicsObject
   public float maxSpeed = 7;
   public float jumpTakeOffSpeed = 7;
 
+  public int miningStregth = 1;
+  public int reachDistance = 3;
+
   // private SpriteRenderer spriteRenderer;
   //private Animator animator;
 
@@ -38,8 +41,6 @@ public class CharacterController2D : PhysicsObject
       PlaceBlockFromInventory();
 
       Vector2 _spawnTilePosition = new Vector3(Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).x + 0.5f), Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).y + 0.5f));
-
-      WorldLoader.m_Terrain.GetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y).GetComponent<TileGOData>().ShowInventory();
     }
     if (Input.GetKey(KeyCode.E))
     {
@@ -87,24 +88,40 @@ public class CharacterController2D : PhysicsObject
 
   //-----------------------------------------------------------------------------------------------------------//
 
-  //TODO: call these functions from a global mouseController
+  /// <summary>
+  /// Mining
+  /// </summary>
   private void Mining()
   {
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     Vector2 _mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
     Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
-    // change 3 to reachDistance
-    if (Vector2.Distance(_mousePosition, _characterPosition) < 3)
+    // If the distance between the character and the place where we clicked is smaller than the reach distance then we call the mine fucntion for that tile
+    if (Vector2.Distance(_mousePosition, _characterPosition) < reachDistance)
     {
-      RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-
-      if (hit.collider != null && hit.collider.transform.tag == "Tile")
-      {
-        //TODO: 10-pickaxe strenght
-        hit.collider.GetComponent<TileGOData>().Mine(1);
-      }
+      WorldLoader.m_Terrain.GetTileAt(_mousePosition.x, _mousePosition.y).GetComponent<TileGOData>().Mine(miningStregth);
     }
   }
+
+  //-----------------------------------------------------------------------------------------------------------//
+
+  ////TODO: call these functions from a global mouseController
+  //private void Mining1()
+  //{
+  //  Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+  //  Vector2 _mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+  //  Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
+  //  // change 3 to reachDistance
+  //  if (Vector2.Distance(_mousePosition, _characterPosition) < 3)
+  //  {
+  //    RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+
+  //    if (hit.collider != null && hit.collider.transform.tag == "Tile")
+  //    {
+  //      //TODO: 10-pickaxe strenght
+  //      hit.collider.GetComponent<TileGOData>().Mine(1);
+  //    }
+  //  }
+  //}
 
   //-----------------------------------------------------------------------------------------------------------//
 
@@ -112,19 +129,56 @@ public class CharacterController2D : PhysicsObject
   {
     Vector2 _mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
     Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
+    Vector2 _spawnTilePosition = new Vector3(Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).x + 0.5f), Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).y + 0.5f));
+
+    // Check if there is already a tile here
+    if (WorldGeneration.m_Terrain.GetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y) == 0)
+    {
+      // change 3 to reachDistance
+      if (Vector2.Distance(_mousePosition, _characterPosition) < reachDistance)
+      {
+        ushort _itemID = InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(false);
+        // Check if there is an item in the selected slot
+        if (_itemID != 0)
+        {
+          // Set the tile
+          WorldLoader.m_Terrain.SetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y, _itemID);
+          WorldGeneration.m_Terrain.SetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y, _itemID);
+          // Remove the item from the inventory
+          InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(true);
+        }
+      }
+    }
+    else
+    {
+      GameObject _clickedTile = WorldLoader.m_Terrain.GetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y);
+      _clickedTile.GetComponent<TileGOData>().ShowInventory();
+    }
+  }
+
+  /// <summary>
+  /// Places the selected item from the inventory into the world
+  /// </summary>
+  private void PlaceBlockFromInventory1()
+  {
+    Vector2 _mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+    Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
     // change 3 to reachDistance
-    if (Vector2.Distance(_mousePosition, _characterPosition) < 3)
+    if (Vector2.Distance(_mousePosition, _characterPosition) < reachDistance)
     {
       ushort _itemID = InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(false);
+      // Check if there is an item in the selected slot
       if (_itemID != 0)
       {
         Vector2 _spawnTilePosition = new Vector3(Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).x + 0.5f), Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).y + 0.5f));
 
+        // Check if there is already a tile here
         if (WorldGeneration.m_Terrain.GetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y) == 0)
         {
+          // Set the tile
           WorldLoader.m_Terrain.SetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y, _itemID);
-
           WorldGeneration.m_Terrain.SetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y, _itemID);
+          // Remove the item from the inventory
           InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(true);
         }
       }
@@ -133,8 +187,12 @@ public class CharacterController2D : PhysicsObject
 
   //-----------------------------------------------------------------------------------------------------------//
 
+  /// <summary>
+  /// Interacting with the tiles
+  /// </summary>
   private void Interact()
   {
+    // If we have a tile with IInteract interface at the characters position then we call the interact function on it.
     Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
     IInteractable _tileToInteract = WorldLoader.m_Terrain.GetTileAt(_characterPosition.x, _characterPosition.y).GetComponent<IInteractable>();
 

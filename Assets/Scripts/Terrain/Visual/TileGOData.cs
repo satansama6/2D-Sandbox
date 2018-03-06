@@ -9,14 +9,18 @@ namespace Terrain.Visuals
   {
     public int id;
     public int durability;
+    public bool isBreakable = true;
     public bool isDirty;
+
     public List<int> itemDrop = new List<int>();
 
-    protected GameObject inventory;
+    public GameObject inventory;
 
     protected virtual void Start()
     {
     }
+
+    //-----------------------------------------------------------------------------------------------------------//
 
     /// <summary>
     /// We call this function whenever a block gets clickedOn(mined)
@@ -24,22 +28,34 @@ namespace Terrain.Visuals
     /// <param name="amount"> Mining strenght, reduce durability by this amount </param>
     public virtual void Mine(int amount)
     {
-      durability -= amount;
-      if (durability <= 0)
+      if (isBreakable)
       {
-        WorldGeneration.m_Terrain.SetTileAt((int)transform.position.x, (int)transform.position.y, 0);
-        foreach (int id in TileDatabase.sharedInstance.FetchTileByID(id).itemDrop)
+        durability -= amount;
+        if (durability <= 0)
         {
-          InventoryPanel.sharedInstance.AddItem(id, 1);
+          WorldGeneration.m_Terrain.SetTileAt((int)transform.position.x, (int)transform.position.y, 0);
+          WorldLoader.m_Terrain.SetTileAt((int)transform.position.x, (int)transform.position.y, 0);
+          foreach (int id in TileDatabase.sharedInstance.FetchTileByID(id).itemDrop)
+          {
+            InventoryPanel.sharedInstance.AddItem(id, 1);
+          }
+          gameObject.SetActive(false);
         }
-        gameObject.SetActive(false);
       }
     }
+
+    //-----------------------------------------------------------------------------------------------------------//
 
     public virtual void Place()
     {
     }
 
+    //-----------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// If the inventory is active we deactive it
+    /// If the inventory is inactive we active it
+    /// </summary>
     public virtual void ShowInventory()
     {
       if (inventory != null)
@@ -53,7 +69,10 @@ namespace Terrain.Visuals
       }
     }
 
-    //TODO: refactor this to 2 script
+    //-----------------------------------------------------------------------------------------------------------//
+
+    #region NeighbourTiles
+
     public TileGOData UpLeft()
     {
       GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x - 1, (int)transform.position.y + 1);
@@ -66,6 +85,8 @@ namespace Terrain.Visuals
         return null;
       }
     }
+
+    //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData Up()
     {
@@ -80,6 +101,8 @@ namespace Terrain.Visuals
       }
     }
 
+    //-----------------------------------------------------------------------------------------------------------//
+
     public TileGOData UpRight()
     {
       GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x + 1, (int)transform.position.y + 1);
@@ -92,6 +115,8 @@ namespace Terrain.Visuals
         return null;
       }
     }
+
+    //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData Left()
     {
@@ -106,6 +131,8 @@ namespace Terrain.Visuals
       }
     }
 
+    //-----------------------------------------------------------------------------------------------------------//
+
     public TileGOData Right()
     {
       GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x + 1, (int)transform.position.y);
@@ -118,6 +145,8 @@ namespace Terrain.Visuals
         return null;
       }
     }
+
+    //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData DownLeft()
     {
@@ -132,6 +161,8 @@ namespace Terrain.Visuals
       }
     }
 
+    //-----------------------------------------------------------------------------------------------------------//
+
     public TileGOData Down()
     {
       GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x, (int)transform.position.y - 1);
@@ -145,6 +176,8 @@ namespace Terrain.Visuals
       }
     }
 
+    //-----------------------------------------------------------------------------------------------------------//
+
     public TileGOData DownRight()
     {
       GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x + 1, (int)transform.position.y - 1);
@@ -157,5 +190,7 @@ namespace Terrain.Visuals
         return null;
       }
     }
+
+    #endregion NeighbourTiles
   }
 }

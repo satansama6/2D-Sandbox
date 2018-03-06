@@ -90,8 +90,7 @@ public class Inventory : MonoBehaviour
   ///  <param name="number"> Change amount </param>
   protected void UpdateItemCount(int _position, int _amount, InventorySlot[] slots)
   {
-    slots[_position].Item.itemCount += _amount;
-    UpdateInventoryVisuals(_position, slots);
+    slots[_position].UpdateItemCount(_amount);
   }
 
   /// <summary>
@@ -100,17 +99,22 @@ public class Inventory : MonoBehaviour
   /// <param name="position"> Posion for item that we want to update the visuals </param>
   protected void UpdateInventoryVisuals(int _position, InventorySlot[] slots)
   {
-    // If the itemCount is 0 we destroy the item
-    if (slots[_position].Item.itemCount == 0)
-    {
-      DestroyImmediate(slots[_position].ItemGO);
-    }
-    else
-    {
-      slots[_position].ItemGO.GetComponent<Image>().sprite = slots[_position].Item.item.sprite;
+    slots[_position].UpdateSlotVisual();
 
-      slots[_position].ItemGO.GetComponentInChildren<Text>().text = slots[_position].Item.itemCount.ToString();
-    }
+    // REMOVE
+    //// If the itemCount is 0 we destroy the item
+    //if (slots[_position].Item.itemCount == 0)
+    //{
+    //  DestroyImmediate(slots[_position].ItemGO);
+    //}
+    //else
+    //{
+    //  slots[_position].ItemGO.GetComponent<Image>().sprite = slots[_position].Item.item.sprite;
+
+    //  slots[_position].ItemGO.GetComponentInChildren<Text>().text = slots[_position].Item.itemCount.ToString();
+    //}
+
+    // ENDREMOVE
   }
 
   /// <summary>

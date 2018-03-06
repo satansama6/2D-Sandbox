@@ -63,8 +63,8 @@ public class InventoryPanel : Inventory
   private void Start()
   {
     ////TESTING ONLY
-    //AddItem(1, 1);
-    //AddItem(1, 1);
+    AddItem(1, 1);
+    AddItem(1, 1);
     //AddItem(1, 1);
     //AddItem(1, 1);
     //AddItem(1, 1);
@@ -150,6 +150,7 @@ public class InventoryPanel : Inventory
   /// <summary>
   /// Return the items ID in selectedSlot
   /// </summary>
+  /// <param name="removeItem"> If we want to remove the selected item from the inventory </param>
   /// <returns> Int that represents the item ID </returns>
   public ushort GetItemInSelectedInventorySlot(bool removeItem)
   {

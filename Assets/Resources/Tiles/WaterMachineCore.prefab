@@ -96,6 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 150
   durability: 10
+  isBreakable: 1
   isDirty: 0
   itemDrop: 96000000
   inventory: {fileID: 0}

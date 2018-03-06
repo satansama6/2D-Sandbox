@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Terrain.Data;
 
+//public enum TileTypes
+//{ Empty }
+
 [System.Serializable]
 public class Item
 {

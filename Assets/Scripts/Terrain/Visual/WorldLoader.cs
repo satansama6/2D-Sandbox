@@ -148,6 +148,26 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    public int GetTileIDAt(float x, float y)
+    {
+      x = Mathf.Round(x);
+      y = Mathf.Round(y);
+
+      // No need to devide with 16
+      int _chunkX = (int)(x / 16) * 16;
+      int _chunkY = (int)(y / 16) * 16;
+
+      int _tileX = (int)x % ChunkData.m_Size;
+      int _tileY = (int)y % ChunkData.m_Size;
+      if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY)))
+      {
+        return m_ChunkMap[new Vector2(_chunkX, _chunkY)].GetTileAt(_tileX, _tileY).GetComponent<TileGOData>().id;
+      }
+      return 0;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------//
+
     public void SetTileAt(int x, int y, ushort id)
     {
       // We need this division and multiplication in the if below

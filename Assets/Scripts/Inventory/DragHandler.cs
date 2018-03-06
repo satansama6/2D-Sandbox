@@ -59,6 +59,6 @@ public class DragHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
   public void OnPointerDown(PointerEventData eventData)
   {
-    CraftingPanel.sharedInstance.CraftItem(gameObject.GetComponent<ItemGO>().item.ID);
+    CraftingPanel.sharedInstance.CraftItem(gameObject.GetComponent<SlotData>().item.ID);
   }
 }

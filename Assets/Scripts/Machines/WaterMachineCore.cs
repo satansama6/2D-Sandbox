@@ -6,20 +6,35 @@ using Terrain.Data;
 
 public class WaterMachineCore : TileGOData, IInteractable
 {
-  private int dirtCount = 10000;
+  private int dirtCount = 0;
+  private float dirtPercentage = 0;
+
+  private InventorySlot dirtSlot;
+  private InventorySlot sandSlot;
+
   public List<WaterTank> waterTanks = new List<WaterTank>();
 
   protected override void Start()
   {
-    inventory = GameObject.Find("WaterMachineUI");
   }
 
   public void Interact()
   {
-    if (dirtCount > 0)
+    // TODO: Do it when you put items in the machine slot
+    if (dirtSlot.ItemGO != null)
     {
-      dirtCount--;
+      dirtCount = dirtSlot.Item.itemCount;
 
+      dirtPercentage += 0.5f;
+
+      if (dirtPercentage >= 100)
+      {
+        dirtPercentage = 0;
+        dirtCount--;
+        dirtSlot.UpdateItemCount(-1);
+        // 4 is the ID for sand
+        sandSlot.AddItem(4, 1);
+      }
       if (waterTanks.Count == 0)
       {
         // We need to show a warning message to the player that he needs to place a water tank near the core
@@ -37,6 +52,18 @@ public class WaterMachineCore : TileGOData, IInteractable
         }
       }
     }
+  }
+
+  public override void ShowInventory()
+  {
+    if (inventory == null)
+    {
+      inventory = InventoryUtility.sharedInstance.CreateGenericInventory(2);
+      dirtSlot = inventory.transform.GetChild(1).transform.GetChild(0).GetComponent<InventorySlot>();
+      sandSlot = inventory.transform.GetChild(1).transform.GetChild(1).GetComponent<InventorySlot>();
+      inventory.SetActive(false);
+    }
+    base.ShowInventory();
   }
 
   public override void Mine(int amount)
