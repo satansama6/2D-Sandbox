@@ -44,12 +44,12 @@ public class ItemDatabase : MonoBehaviour
     // databaseList = LoadItemsFromFile();
   }
 
-  public Item FetchItemByID(int id)
+  public Item FetchItemByType(TileType type)
   {
     foreach (Item item in itemDatabase)
     {
       // TODO: in case of performance issues we can simply use database[id] if we imput our items in order
-      if (item.ID == id)
+      if (item.type == type)
       {
         return item;
       }

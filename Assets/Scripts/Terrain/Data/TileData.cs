@@ -7,11 +7,11 @@ namespace Terrain.Data
   [System.Serializable]
   public class TileData
   {
-    public ushort id;
+    public TileType type;
 
-    public TileData(ushort id)
+    public TileData(TileType type)
     {
-      this.id = id;
+      this.type = type;
     }
   }
 }

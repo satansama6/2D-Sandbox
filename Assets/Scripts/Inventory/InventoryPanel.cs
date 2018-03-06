@@ -63,8 +63,9 @@ public class InventoryPanel : Inventory
   private void Start()
   {
     ////TESTING ONLY
-    AddItem(1, 1);
-    AddItem(1, 1);
+    AddItem(TileType.Dirt, 1);
+    AddItem(TileType.Dirt, 1);
+
     //AddItem(1, 1);
     //AddItem(1, 1);
     //AddItem(1, 1);
@@ -84,25 +85,26 @@ public class InventoryPanel : Inventory
     //AddItem(2, 1);
 
     //AddItem(2, 1);
-    AddItem(150, 1);
-    AddItem(151, 1);
-    AddItem(151, 1);
-    AddItem(151, 1);
+    AddItem(TileType.WaterMachineCore, 1);
+    AddItem(TileType.WaterTank, 1);
+    AddItem(TileType.WaterTank, 1);
+    AddItem(TileType.WaterTank, 1);
+    AddItem(TileType.WaterTank, 1);
   }
 
   //-----------------------------------------------------------------------------------------------------------//
 
-  public void AddItem(int id, int amount)
+  public void AddItem(TileType type, int amount)
   {
-    base.AddItem(id, amount, slots);
+    base.AddItem(type, amount, slots);
     EventManagerTypeSafe.TriggerEvent(new UIEvents.OnItemAddedOrRemoved());
   }
 
   // -----------------------------------------------------------------------------------------------------------//
 
-  public void RemoveItem(int id, int amount)
+  public void RemoveItem(TileType type, int amount)
   {
-    base.RemoveItem(id, amount, slots);
+    base.RemoveItem(type, amount, slots);
     EventManagerTypeSafe.TriggerEvent(new UIEvents.OnItemAddedOrRemoved());
   }
 
@@ -148,15 +150,15 @@ public class InventoryPanel : Inventory
   // -----------------------------------------------------------------------------------------------------------//
 
   /// <summary>
-  /// Return the items ID in selectedSlot
+  /// Return the items type in selectedSlot
   /// </summary>
   /// <param name="removeItem"> If we want to remove the selected item from the inventory </param>
-  /// <returns> Int that represents the item ID </returns>
-  public ushort GetItemInSelectedInventorySlot(bool removeItem)
+  /// <returns> Int that represents the item type </returns>
+  public TileType GetItemInSelectedInventorySlot(bool removeItem)
   {
     if (slots[selectedSlot].ItemGO != null && slots[selectedSlot].Item.item.placable)
     {
-      ushort _id = slots[selectedSlot].Item.item.ID;
+      TileType _id = slots[selectedSlot].Item.item.type;
       if (removeItem)
       {
         UpdateItemCount(selectedSlot, -1, slots);

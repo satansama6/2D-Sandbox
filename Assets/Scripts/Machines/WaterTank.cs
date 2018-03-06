@@ -12,7 +12,7 @@ public class WaterTank : TileGOData
   public GameObject waterFill;
 
   // TODO: do we want more than 1 core for 1 water tank
-  public WaterMachineCore core;
+  private WaterMachineCore core;
 
   public bool AddWater(float amount)
   {
@@ -28,7 +28,7 @@ public class WaterTank : TileGOData
   //TODO REFACTORING!!!
   public override void Place()
   {
-    if (Up().id == 150)
+    if (Up().type == TileType.WaterMachineCore)
     {
       //&& Up().GetComponent<WaterTank>().core
       Up().GetComponent<WaterMachineCore>().waterTanks.Add(this);
@@ -36,49 +36,49 @@ public class WaterTank : TileGOData
       return;
     }
 
-    if (Up().id == 151)
+    if (Up().type == TileType.WaterTank)
     {
       Up().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Up().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>();
       return;
     }
 
-    if (Left().id == 150)
+    if (Left().type == TileType.WaterMachineCore)
     {
       Left().GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Left().GetComponent<WaterMachineCore>();
       return;
     }
 
-    if (Left().id == 151)
+    if (Left().type == TileType.WaterTank)
     {
       Left().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Left().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>();
       return;
     }
 
-    if (Down().id == 150)
+    if (Down().type == TileType.WaterMachineCore)
     {
       Down().GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Down().GetComponent<WaterMachineCore>();
       return;
     }
 
-    if (Down().id == 151)
+    if (Down().type == TileType.WaterTank)
     {
       Down().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Down().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>();
       return;
     }
 
-    if (Right().id == 150)
+    if (Right().type == TileType.WaterMachineCore)
     {
       Right().GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Right().GetComponent<WaterMachineCore>();
       return;
     }
 
-    if (Right().id == 151)
+    if (Right().type == TileType.WaterTank)
     {
       Right().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>().waterTanks.Add(this);
       core = Right().GetComponent<WaterTank>().core.GetComponent<WaterMachineCore>();

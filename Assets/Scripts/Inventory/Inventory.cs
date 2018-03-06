@@ -14,13 +14,13 @@ public class Inventory : MonoBehaviour
   /// <summary>
   /// Adds an item into the inventory
   /// </summary>
-  /// <param name="id"> Item to add ID </param>
+  /// <param name="type"> Item to add type </param>
   /// <param name="amount"> Amount to add </param>
   /// <param name="slots"> The inventory slots that we should add to </param>
-  protected void AddItem(int id, int amount, InventorySlot[] slots)
+  protected void AddItem(TileType type, int amount, InventorySlot[] slots)
   {
-    Item _itemToAdd = ItemDatabase.sharedInsatance.FetchItemByID(id);
-    int _position = WhereIsItemInInventory(id, slots);
+    Item _itemToAdd = ItemDatabase.sharedInsatance.FetchItemByType(type);
+    int _position = WhereIsItemInInventory(type, slots);
     if (_position != -1)
     {
       UpdateItemCount(_position, amount, slots);
@@ -45,12 +45,12 @@ public class Inventory : MonoBehaviour
   /// <summary>
   /// Removes the first item that we can find from the inventory
   /// </summary>
-  /// <param name="id"> Item to remove ID </param>
+  /// <param name="type"> Item to remove type </param>
   /// <param name="amount"> Amount to remove </param>
   /// <param name="slots"> Slots to remove from </param>
-  public void RemoveItem(int id, int amount, InventorySlot[] slots)
+  public void RemoveItem(TileType type, int amount, InventorySlot[] slots)
   {
-    int _position = WhereIsItemInInventory(id, slots);
+    int _position = WhereIsItemInInventory(type, slots);
     if (_position != -1)
     {
       UpdateItemCount(_position, amount, slots);
@@ -63,18 +63,18 @@ public class Inventory : MonoBehaviour
   }
 
   /// <summary>
-  /// Check if item with ID is in inventory and return its position
+  /// Check if item with type is in inventory and return its position
   /// </summary>
-  /// <param name="id"> The item ID that we are looking for </param>
-  /// <returns> A posion where we found the item, -1 if there is no item with ID in inventory </returns>
+  /// <param name="type"> The item type that we are looking for </param>
+  /// <returns> A posion where we found the item, -1 if there is no item with type in inventory </returns>
 
-  protected int WhereIsItemInInventory(int id, InventorySlot[] slots)
+  protected int WhereIsItemInInventory(TileType type, InventorySlot[] slots)
   {
     for (int i = 0; i < slots.Length; i++)
     {
       if (slots[i].ItemGO != null)
       {
-        if (slots[i].Item.item.ID == id && slots[i].Item.itemCount < slots[i].Item.item.stackSize)
+        if (slots[i].Item.item.type == type && slots[i].Item.itemCount < slots[i].Item.item.stackSize)
         {
           return i;
         }

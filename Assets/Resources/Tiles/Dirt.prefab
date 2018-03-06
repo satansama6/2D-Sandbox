@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc963a6fc5a476449b5c0b0f4300e1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
+  type: 1
   durability: 10
   isBreakable: 1
   isDirty: 0

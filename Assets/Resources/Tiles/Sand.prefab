@@ -108,10 +108,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc963a6fc5a476449b5c0b0f4300e1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
+  type: 3
   durability: 10
+  isBreakable: 1
   isDirty: 0
-  itemDrop: 
+  itemDrop: 03000000
+  inventory: {fileID: 0}
 --- !u!114 &114659232415410592
 MonoBehaviour:
   m_ObjectHideFlags: 1

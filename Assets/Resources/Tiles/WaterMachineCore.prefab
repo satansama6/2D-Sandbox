@@ -94,11 +94,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf576eafb8d69f42aa62399b5f766f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 150
+  type: 9
   durability: 10
   isBreakable: 1
   isDirty: 0
-  itemDrop: 96000000
+  itemDrop: 09000000
   inventory: {fileID: 0}
   waterTanks: []
 --- !u!212 &212979429926978644

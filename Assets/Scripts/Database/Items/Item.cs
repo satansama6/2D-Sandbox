@@ -3,13 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Terrain.Data;
 
-//public enum TileTypes
-//{ Empty }
+public enum TileType
+{
+  Empty,
+  /*Basic Tiles*/
+  Dirt,
+  Grass,
+  Sand,
+  Snow,
+  Stone,
+  /*Ores*/
+  Copper,
+  Iron,
+  Gold,
+  /*Machines*/
+  WaterMachineCore,
+  WaterTank
+}
 
 [System.Serializable]
 public class Item
 {
-  public ushort ID = 0;
+  public TileType type = 0;
   public string itemName = "Empty";
   public int stackSize = 64;
   public string slug = "Empty";
@@ -18,12 +33,12 @@ public class Item
 
   public Item()
   {
-    this.ID = 0;
+    this.type = 0;
   }
 
-  public Item(ushort ID, string name, int stackSize, string slug)
+  public Item(TileType type, string name, int stackSize, string slug)
   {
-    this.ID = ID;
+    this.type = type;
     this.itemName = name;
     this.stackSize = stackSize;
     this.slug = slug;

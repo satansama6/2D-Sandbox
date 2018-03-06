@@ -25,11 +25,11 @@ namespace Terrain.Visuals
       LoadTilesFromResources();
     }
 
-    public TileGOData FetchTileByID(int id)
+    public TileGOData FetchTileByID(TileType type)
     {
       foreach (GameObject tile in databaseList.tileDatabase)
       {
-        if (tile.GetComponent<TileGOData>().id == id)
+        if (tile.GetComponent<TileGOData>().type == type)
         {
           return tile.GetComponent<TileGOData>();
         }

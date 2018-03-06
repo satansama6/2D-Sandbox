@@ -18,14 +18,14 @@ public class RecipeDatabase : MonoBehaviour
   {
     List<Item> _inputItems = new List<Item>
     {
-      ItemDatabase.sharedInsatance.FetchItemByID(1),
-      ItemDatabase.sharedInsatance.FetchItemByID(5)
+      ItemDatabase.sharedInsatance.FetchItemByType(TileType.Dirt),
+      ItemDatabase.sharedInsatance.FetchItemByType(TileType.Snow)
     };
-    recipeDatabase.Add(new Recipe(ItemDatabase.sharedInsatance.FetchItemByID(100), _inputItems));
+    recipeDatabase.Add(new Recipe(ItemDatabase.sharedInsatance.FetchItemByType(TileType.WaterMachineCore), _inputItems));
 
     _inputItems = new List<Item>();
-    _inputItems.Add(ItemDatabase.sharedInsatance.FetchItemByID(5));
+    _inputItems.Add(ItemDatabase.sharedInsatance.FetchItemByType(TileType.Snow));
 
-    recipeDatabase.Add(new Recipe(ItemDatabase.sharedInsatance.FetchItemByID(101), _inputItems));
+    recipeDatabase.Add(new Recipe(ItemDatabase.sharedInsatance.FetchItemByType(TileType.WaterTank), _inputItems));
   }
 }

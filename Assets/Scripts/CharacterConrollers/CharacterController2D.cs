@@ -39,8 +39,6 @@ public class CharacterController2D : PhysicsObject
     if (Input.GetMouseButtonDown(1))
     {
       PlaceBlockFromInventory();
-
-      Vector2 _spawnTilePosition = new Vector3(Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).x + 0.5f), Mathf.FloorToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).y + 0.5f));
     }
     if (Input.GetKey(KeyCode.E))
     {
@@ -137,7 +135,7 @@ public class CharacterController2D : PhysicsObject
       // change 3 to reachDistance
       if (Vector2.Distance(_mousePosition, _characterPosition) < reachDistance)
       {
-        ushort _itemID = InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(false);
+        TileType _itemID = InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(false);
         // Check if there is an item in the selected slot
         if (_itemID != 0)
         {
@@ -166,7 +164,7 @@ public class CharacterController2D : PhysicsObject
     // change 3 to reachDistance
     if (Vector2.Distance(_mousePosition, _characterPosition) < reachDistance)
     {
-      ushort _itemID = InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(false);
+      TileType _itemID = InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(false);
       // Check if there is an item in the selected slot
       if (_itemID != 0)
       {

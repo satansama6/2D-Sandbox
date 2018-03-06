@@ -7,13 +7,16 @@ namespace Terrain.Visuals
 {
   public class TileGOData : MonoBehaviour
   {
-    public int id;
+    public TileType type;
     public int durability;
     public bool isBreakable = true;
+
+    [HideInInspector]
     public bool isDirty;
 
-    public List<int> itemDrop = new List<int>();
+    public List<TileType> itemDrop = new List<TileType>();
 
+    [HideInInspector]
     public GameObject inventory;
 
     protected virtual void Start()
@@ -35,9 +38,9 @@ namespace Terrain.Visuals
         {
           WorldGeneration.m_Terrain.SetTileAt((int)transform.position.x, (int)transform.position.y, 0);
           WorldLoader.m_Terrain.SetTileAt((int)transform.position.x, (int)transform.position.y, 0);
-          foreach (int id in TileDatabase.sharedInstance.FetchTileByID(id).itemDrop)
+          foreach (TileType type in TileDatabase.sharedInstance.FetchTileByID(type).itemDrop)
           {
-            InventoryPanel.sharedInstance.AddItem(id, 1);
+            InventoryPanel.sharedInstance.AddItem(type, 1);
           }
           gameObject.SetActive(false);
         }

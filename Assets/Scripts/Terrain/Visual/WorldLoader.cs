@@ -148,7 +148,7 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public int GetTileIDAt(float x, float y)
+    public TileType GetTileIDAt(float x, float y)
     {
       x = Mathf.Round(x);
       y = Mathf.Round(y);
@@ -161,14 +161,14 @@ namespace Terrain.Visuals
       int _tileY = (int)y % ChunkData.m_Size;
       if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY)))
       {
-        return m_ChunkMap[new Vector2(_chunkX, _chunkY)].GetTileAt(_tileX, _tileY).GetComponent<TileGOData>().id;
+        return m_ChunkMap[new Vector2(_chunkX, _chunkY)].GetTileAt(_tileX, _tileY).GetComponent<TileGOData>().type;
       }
       return 0;
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public void SetTileAt(int x, int y, ushort id)
+    public void SetTileAt(int x, int y, TileType type)
     {
       // We need this division and multiplication in the if below
       int _chunkX = x / ChunkData.m_Size;
@@ -178,7 +178,7 @@ namespace Terrain.Visuals
       int _tileY = y % ChunkData.m_Size;
       if (m_ChunkMap.ContainsKey(new Vector2(_chunkX * ChunkData.m_Size, _chunkY * ChunkData.m_Size)) == true)
       {
-        m_ChunkMap[new Vector2(_chunkX * ChunkData.m_Size, _chunkY * ChunkData.m_Size)].SetTileAt(_tileX, _tileY, id);
+        m_ChunkMap[new Vector2(_chunkX * ChunkData.m_Size, _chunkY * ChunkData.m_Size)].SetTileAt(_tileX, _tileY, type);
       }
       else
       {
@@ -204,17 +204,17 @@ namespace Terrain.Visuals
           int bitmaskValue = 0;
 
           // UpLeft
-          if (_tileToRedraw.Up() != null && _tileToRedraw.Up().id != _tileToRedraw.id)
+          if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
           {
             bitmaskValue += 2;
           }
 
-          if (_tileToRedraw.UpLeft() != null && _tileToRedraw.UpLeft().id != _tileToRedraw.id)
+          if (_tileToRedraw.UpLeft() != null && _tileToRedraw.UpLeft().type != _tileToRedraw.type)
           {
             bitmaskValue += 1;
           }
 
-          if (_tileToRedraw.Left() != null && _tileToRedraw.Left().id != _tileToRedraw.id)
+          if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
           {
             bitmaskValue += 8;
           }
@@ -224,17 +224,17 @@ namespace Terrain.Visuals
 
           bitmaskValue = 0;
           // UpRight
-          if (_tileToRedraw.Up() != null && _tileToRedraw.Up().id != _tileToRedraw.id)
+          if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
           {
             bitmaskValue += 2;
           }
 
-          if (_tileToRedraw.UpRight() != null && _tileToRedraw.UpRight().id != _tileToRedraw.id)
+          if (_tileToRedraw.UpRight() != null && _tileToRedraw.UpRight().type != _tileToRedraw.type)
           {
             bitmaskValue += 4;
           }
 
-          if (_tileToRedraw.Right() != null && _tileToRedraw.Right().id != _tileToRedraw.id)
+          if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
           {
             bitmaskValue += 16;
           }
@@ -242,16 +242,16 @@ namespace Terrain.Visuals
           _tileToRedraw.transform.GetChild(2).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
           bitmaskValue = 0;
           // DownLeft
-          if (_tileToRedraw.Down() != null && _tileToRedraw.Down().id != _tileToRedraw.id)
+          if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
           {
             bitmaskValue += 64;
           }
 
-          if (_tileToRedraw.DownLeft() != null && _tileToRedraw.DownLeft().id != _tileToRedraw.id)
+          if (_tileToRedraw.DownLeft() != null && _tileToRedraw.DownLeft().type != _tileToRedraw.type)
           {
             bitmaskValue += 32;
           }
-          if (_tileToRedraw.Left() != null && _tileToRedraw.Left().id != _tileToRedraw.id)
+          if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
           {
             bitmaskValue += 8;
           }
@@ -260,17 +260,17 @@ namespace Terrain.Visuals
           bitmaskValue = 0;
           // DownRight
 
-          if (_tileToRedraw.Down() != null && _tileToRedraw.Down().id != _tileToRedraw.id)
+          if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
           {
             bitmaskValue += 64;
           }
 
-          if (_tileToRedraw.DownRight() != null && _tileToRedraw.DownRight().id != _tileToRedraw.id)
+          if (_tileToRedraw.DownRight() != null && _tileToRedraw.DownRight().type != _tileToRedraw.type)
           {
             bitmaskValue += 128;
           }
 
-          if (_tileToRedraw.Right() != null && _tileToRedraw.Right().id != _tileToRedraw.id)
+          if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
           {
             bitmaskValue += 16;
           }

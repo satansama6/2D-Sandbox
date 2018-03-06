@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Terrain.Data
 {
   /// <summary>
-  /// Stores the tile ids
+  /// Stores the tile types
   /// </summary>
   public class ChunkData
   {
@@ -47,14 +47,14 @@ namespace Terrain.Data
       {
         for (int _y = 0; _y < m_Size; _y++)
         {
-          m_Tiles[_x, _y] = new TileData(tiles[_x, _y].id);
+          m_Tiles[_x, _y] = new TileData(tiles[_x, _y].type);
         }
       }
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public ChunkData(int x, int y, ushort[,] tiles)
+    public ChunkData(int x, int y, TileType[,] tiles)
     {
       this.x = x * ChunkData.m_Size;
       this.y = y * ChunkData.m_Size;
@@ -83,19 +83,19 @@ namespace Terrain.Data
     //-----------------------------------------------------------------------------------------------------------//
 
     /// <summary>
-    /// Change tile id at x,y
+    /// Change tile type at x,y
     /// </summary>
     /// <param name="x"> x-position in chunk. Must be lower than chunk.size </param>
     /// <param name="y"> y-position in chunk. Must be lower than chunk.size </param>
     /// <param name="type"> Type to change the tile </param>
-    public void SetTileAt(int x, int y, ushort id)
+    public void SetTileAt(int x, int y, TileType type)
     {
-      m_Tiles[x, y].id = id;
+      m_Tiles[x, y].type = type;
     }
 
-    public ushort GetTileAt(int x, int y)
+    public TileType GetTileAt(int x, int y)
     {
-      return m_Tiles[x, y].id;
+      return m_Tiles[x, y].type;
     }
   }
 }

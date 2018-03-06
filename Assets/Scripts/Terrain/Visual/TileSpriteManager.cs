@@ -32,55 +32,55 @@ public class TileSpriteManager : MonoBehaviour
   public List<Sprite> mask = new List<Sprite>();
   public List<Sprite> outline = new List<Sprite>();
 
-  public Sprite GetTileForPosition(int x, int y, ushort id)
+  public Sprite GetTileForPosition(int x, int y, TileType type)
   {
     x = x % 8;
     y = y % 8;
 
-    if (id == 1)
+    if (type == TileType.Dirt)
     {
       return dirtTiles[(56 - y * 8) + x];
     }
-    if (id == 2)
+    if (type == TileType.Stone)
     {
       return stoneTiles[(56 - y * 8) + x];
     }
-    if (id == 4)
+    if (type == TileType.Sand)
     {
       return sand;
     }
-    if (id == 5)
+    if (type == TileType.Snow)
     {
       return snowTiles[(56 - y * 8) + x];
     }
-    if (id == 6)
+    if (type == TileType.Iron)
     {
       return iron;
     }
 
-    if (id == 7)
+    if (type == TileType.Gold)
     {
       return gold;
     }
 
-    if (id == 8)
+    if (type == TileType.Copper)
     {
       return copper;
     }
-    if (id == 150)
+    if (type == TileType.WaterMachineCore)
     {
       return waterMachineCore;
     }
-    if (id == 151)
+    if (type == TileType.WaterTank)
     {
       return waterTank;
     }
-    if (id == 0)
+    if (type == TileType.Empty)
     {
       return null;
     }
 
-    Debug.LogWarning("Can not find sprite for tile: " + id);
+    Debug.LogWarning("Can not find sprite for tile: " + type);
     return null;
   }
 

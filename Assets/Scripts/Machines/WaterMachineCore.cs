@@ -32,8 +32,7 @@ public class WaterMachineCore : TileGOData, IInteractable
         dirtPercentage = 0;
         dirtCount--;
         dirtSlot.UpdateItemCount(-1);
-        // 4 is the ID for sand
-        sandSlot.AddItem(4, 1);
+        sandSlot.AddItem(TileType.Sand, 1);
       }
       if (waterTanks.Count == 0)
       {

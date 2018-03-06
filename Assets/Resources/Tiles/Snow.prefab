@@ -244,10 +244,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc963a6fc5a476449b5c0b0f4300e1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 5
+  type: 4
   durability: 5
+  isBreakable: 1
   isDirty: 0
-  itemDrop: 05000000
+  itemDrop: 04000000
+  inventory: {fileID: 0}
 --- !u!212 &212175269648614686
 SpriteRenderer:
   m_ObjectHideFlags: 1

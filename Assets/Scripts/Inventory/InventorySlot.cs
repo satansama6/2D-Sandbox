@@ -114,11 +114,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler
 
   //-----------------------------------------------------------------------------------------------------------//
 
-  public void AddItem(int id, int amount)
+  public void AddItem(TileType type, int amount)
   {
     if (ItemGO == null)
     {
-      Item _itemToAdd = ItemDatabase.sharedInsatance.FetchItemByID(id);
+      Item _itemToAdd = ItemDatabase.sharedInsatance.FetchItemByType(type);
       CreateNewItem(_itemToAdd);
     }
     UpdateItemCount(amount);

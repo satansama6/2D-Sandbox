@@ -19,13 +19,13 @@ namespace Terrain.Visuals
       {
         for (int _y = 0; _y < ChunkData.m_Size; _y++)
         {
-          _TileType = TileDatabase.sharedInstance.FetchTileByID(_tiles[_x, _y].id).gameObject;
+          _TileType = TileDatabase.sharedInstance.FetchTileByID(_tiles[_x, _y].type).gameObject;
           _TileType = _TileType.GetComponent<PooledMonobehaviour>().Get<PooledMonobehaviour>().gameObject;
 
           _TileType.transform.position = new Vector3(transform.position.x + _x, transform.position.y + _y, 0);
 
           _TileType.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite =
-            TileSpriteManager.sharedInstance.GetTileForPosition(_x, _y, _tiles[_x, _y].id);
+            TileSpriteManager.sharedInstance.GetTileForPosition(_x, _y, _tiles[_x, _y].type);
 
           _TileType.transform.parent = transform;
 
@@ -47,10 +47,10 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public void SetTileAt(int x, int y, ushort id)
+    public void SetTileAt(int x, int y, TileType type)
     {
       GameObject _TileType = null;
-      _TileType = TileDatabase.sharedInstance.FetchTileByID(id).gameObject;
+      _TileType = TileDatabase.sharedInstance.FetchTileByID(type).gameObject;
       _TileType = _TileType.GetComponent<PooledMonobehaviour>().Get<PooledMonobehaviour>().gameObject;
       _TileType.transform.position = new Vector3(x + transform.position.x, y + transform.position.y, 0);
       tileGO[x, y] = _TileType;

@@ -141,12 +141,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6559db9d705b884da72444973a6360d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 151
+  type: 10
   durability: 10
+  isBreakable: 1
   isDirty: 0
-  itemDrop: 97000000
+  itemDrop: 0a000000
+  inventory: {fileID: 0}
   waterFill: {fileID: 1755041110386650}
-  core: {fileID: 0}
 --- !u!114 &114795730164680122
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -92,7 +92,7 @@ namespace Terrain.Data
         }
         // Scale up the elevation to world size
         _elevation *= worldHeight * ChunkData.m_Size;
-        SetTileAt(x, (int)_elevation, 1);
+        SetTileAt(x, (int)_elevation, TileType.Dirt);
       }
     }
 
@@ -116,17 +116,17 @@ namespace Terrain.Data
             // From that tile go till the bottom of the world
             for (int i = y - 1; i > 0; i--)
             {
-              ushort _tileToPlaceId;
+              TileType _tileToPlaceId;
 
               // We want to place grass in 50 tiles from the map outline
               int _elevation = (i + Random.Range(-40, 40));
               if (y - _elevation < 10f)
               {
-                _tileToPlaceId = 1;
+                _tileToPlaceId = TileType.Dirt;
               }
               else
               {
-                _tileToPlaceId = 2;
+                _tileToPlaceId = TileType.Stone;
               }
               SetTileAt(x, i, _tileToPlaceId);
             }
@@ -164,7 +164,7 @@ namespace Terrain.Data
 
               if (_elevation > _maxHeight)
               {
-                ushort _tileToPlaceId = 5;
+                TileType _tileToPlaceId = TileType.Snow;
                 SetTileAt(x, i, _tileToPlaceId);
               }
             }
@@ -199,7 +199,7 @@ namespace Terrain.Data
             float _value = PerlinCalculation3D(x, y, _scaleX, _scaleY, _seed);
             if (_value > _spawnThreshold)
             {
-              ushort _tileToPlaceId = 6;
+              TileType _tileToPlaceId = TileType.Iron;
               SetTileAt(x, y, _tileToPlaceId);
             }
           }
@@ -227,7 +227,7 @@ namespace Terrain.Data
             float _value = PerlinCalculation3D(x, y, _scaleX, _scaleY, _seed);
             if (_value > _spawnThreshold)
             {
-              ushort _tileToPlaceId = 7;
+              TileType _tileToPlaceId = TileType.Gold;
               SetTileAt(x, y, _tileToPlaceId);
             }
           }
@@ -255,7 +255,7 @@ namespace Terrain.Data
             float _value = PerlinCalculation3D(x, y, _scaleX, _scaleY, _seed);
             if (_value > _spawnThreshold)
             {
-              ushort _tileToPlaceId = 8;
+              TileType _tileToPlaceId = TileType.Copper;
               SetTileAt(x, y, _tileToPlaceId);
             }
           }
@@ -274,7 +274,7 @@ namespace Terrain.Data
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="_type"></param>
-    public void SetTileAt(int x, int y, ushort id)
+    public void SetTileAt(int x, int y, TileType type)
     {
       int chunkX = x / ChunkData.m_Size;
       int chunkY = y / ChunkData.m_Size;
@@ -282,12 +282,12 @@ namespace Terrain.Data
       int tileX = x % ChunkData.m_Size;
       int tileY = y % ChunkData.m_Size;
 
-      m_ChunkMap[chunkX, chunkY].SetTileAt(tileX, tileY, id);
+      m_ChunkMap[chunkX, chunkY].SetTileAt(tileX, tileY, type);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public ushort GetTileAt(int x, int y)
+    public TileType GetTileAt(int x, int y)
     {
       int _chunkX = x / ChunkData.m_Size;
       int _chunkY = y / ChunkData.m_Size;

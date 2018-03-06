@@ -47,7 +47,7 @@ public class CraftingPanel : Inventory
     {
       if (!recipe.inputItems.Except(InventoryPanel.sharedInstance.GetItemList()).Any())
       {
-        AddItem(recipe.outputItem.ID, 1, slots);
+        AddItem(recipe.outputItem.type, 1, slots);
         recipes[i] = recipe;
         i++;
       }
@@ -62,21 +62,21 @@ public class CraftingPanel : Inventory
     }
   }
 
-  public void CraftItem(int id)
+  public void CraftItem(TileType type)
   {
-    int i = WhereIsItemInInventory(id, slots);
+    int i = WhereIsItemInInventory(type, slots);
     if (i != -1)
     {
-      AddItem(recipes[i].outputItem.ID, 1, InventoryPanel.sharedInstance.slots);
+      AddItem(recipes[i].outputItem.type, 1, InventoryPanel.sharedInstance.slots);
       foreach (Item item in recipes[i].inputItems)
       {
-        RemoveItem(item.ID, -1, InventoryPanel.sharedInstance.slots);
+        RemoveItem(item.type, -1, InventoryPanel.sharedInstance.slots);
         recalculateCraftableItems = true;
       }
     }
     else
     {
-      Debug.LogError("Item with id: " + id + " does not exist!");
+      Debug.LogError("Item with type: " + type + " does not exist!");
     }
   }
 
