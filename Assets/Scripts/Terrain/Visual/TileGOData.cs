@@ -29,7 +29,8 @@ namespace Terrain.Visuals
     /// We call this function whenever a block gets clickedOn(mined)
     /// </summary>
     /// <param name="amount"> Mining strenght, reduce durability by this amount </param>
-    public virtual void Mine(int amount)
+    /// <returns> True if tile got mined </returns>
+    public virtual bool Mine(int amount)
     {
       if (isBreakable)
       {
@@ -43,8 +44,10 @@ namespace Terrain.Visuals
             InventoryPanel.sharedInstance.AddItem(type, 1);
           }
           gameObject.SetActive(false);
+          return true;
         }
       }
+      return false;
     }
 
     //-----------------------------------------------------------------------------------------------------------//
@@ -76,6 +79,10 @@ namespace Terrain.Visuals
 
     #region NeighbourTiles
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     public TileGOData UpLeft()
     {
       GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x - 1, (int)transform.position.y + 1);

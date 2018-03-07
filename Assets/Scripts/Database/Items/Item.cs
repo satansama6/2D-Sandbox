@@ -18,7 +18,12 @@ public enum TileType
   Gold,
   /*Machines*/
   WaterMachineCore,
-  WaterTank
+  WaterTank,
+  QuarryCore,
+  ManualLever,
+  PlantIncubatorCore,
+  PlantHolder,
+  Furnace
 }
 
 [System.Serializable]

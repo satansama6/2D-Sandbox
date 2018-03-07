@@ -29,6 +29,16 @@ public class TileSpriteManager : MonoBehaviour
 
   public Sprite waterTank;
 
+  public Sprite quarryCore;
+
+  public Sprite manualLever;
+
+  public Sprite plantIncubatorCore;
+
+  public Sprite plantHolder;
+
+  public Sprite furnace;
+
   public List<Sprite> mask = new List<Sprite>();
   public List<Sprite> outline = new List<Sprite>();
 
@@ -75,6 +85,32 @@ public class TileSpriteManager : MonoBehaviour
     {
       return waterTank;
     }
+
+    if (type == TileType.QuarryCore)
+    {
+      return quarryCore;
+    }
+
+    if (type == TileType.ManualLever)
+    {
+      return manualLever;
+    }
+
+    if (type == TileType.PlantIncubatorCore)
+    {
+      return plantIncubatorCore;
+    }
+
+    if (type == TileType.PlantHolder)
+    {
+      return plantHolder;
+    }
+
+    if (type == TileType.Furnace)
+    {
+      return furnace;
+    }
+
     if (type == TileType.Empty)
     {
       return null;

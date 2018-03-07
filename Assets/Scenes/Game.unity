@@ -2472,6 +2472,36 @@ MonoBehaviour:
     slug: WaterTank
     sprite: {fileID: 21300000, guid: 5f05801e09a487546b55889091d09b1c, type: 3}
     placable: 1
+  - type: 11
+    itemName: QuarryCore
+    stackSize: 64
+    slug: QuarryCore
+    sprite: {fileID: 21300000, guid: e9ec36e0f701b4d45a0428681564d8a7, type: 3}
+    placable: 1
+  - type: 12
+    itemName: ManualLever
+    stackSize: 64
+    slug: ManualLever
+    sprite: {fileID: 21300000, guid: 9df620beb4d92e049aa4198c3a54fd24, type: 3}
+    placable: 1
+  - type: 13
+    itemName: PlantIncubatorCore
+    stackSize: 64
+    slug: PlantIncubatorCore
+    sprite: {fileID: 21300000, guid: 8547a2484111d304aad24b98bcfa677e, type: 3}
+    placable: 1
+  - type: 14
+    itemName: PlantHolder
+    stackSize: 64
+    slug: PlantHolder
+    sprite: {fileID: 21300000, guid: e729124c98d1e4f488818ccb701e0e0c, type: 3}
+    placable: 1
+  - type: 15
+    itemName: Furnace
+    stackSize: 64
+    slug: Furnace
+    sprite: {fileID: 21300000, guid: 53057249c0efdb843984e372b7116a2c, type: 3}
+    placable: 1
 --- !u!114 &1021019760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2995,6 +3025,11 @@ MonoBehaviour:
   copper: {fileID: 21300000, guid: 5e2ad68ec40ea7746afd3caaf8d58c4a, type: 3}
   waterMachineCore: {fileID: 21300000, guid: 7ab60d9cda00fcd44af078a4fb54da0a, type: 3}
   waterTank: {fileID: 21300000, guid: 5f05801e09a487546b55889091d09b1c, type: 3}
+  quarryCore: {fileID: 21300000, guid: e9ec36e0f701b4d45a0428681564d8a7, type: 3}
+  manualLever: {fileID: 21300000, guid: 9df620beb4d92e049aa4198c3a54fd24, type: 3}
+  plantIncubatorCore: {fileID: 21300000, guid: 8547a2484111d304aad24b98bcfa677e, type: 3}
+  plantHolder: {fileID: 21300000, guid: e729124c98d1e4f488818ccb701e0e0c, type: 3}
+  furnace: {fileID: 21300000, guid: 53057249c0efdb843984e372b7116a2c, type: 3}
   mask:
   - {fileID: 21300000, guid: bb08959283e09a144ad2abc94bdd3d96, type: 3}
   - {fileID: 21300002, guid: bb08959283e09a144ad2abc94bdd3d96, type: 3}

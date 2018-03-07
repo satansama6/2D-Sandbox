@@ -66,30 +66,9 @@ public class InventoryPanel : Inventory
     AddItem(TileType.Dirt, 1);
     AddItem(TileType.Dirt, 1);
 
-    //AddItem(1, 1);
-    //AddItem(1, 1);
-    //AddItem(1, 1);
-    //AddItem(1, 1);
-    //AddItem(1, 1);
-    //AddItem(1, 1);
-    //AddItem(1, 1);
+    AddItem(TileType.PlantHolder, 1);
 
-    //AddItem(2, 1);
-    //AddItem(2, 1);
-    //AddItem(2, 1);
-    //AddItem(2, 1);
-    //AddItem(2, 1);
-
-    //AddItem(2, 1);
-
-    //AddItem(2, 1);
-
-    //AddItem(2, 1);
-    AddItem(TileType.WaterMachineCore, 1);
-    AddItem(TileType.WaterTank, 1);
-    AddItem(TileType.WaterTank, 1);
-    AddItem(TileType.WaterTank, 1);
-    AddItem(TileType.WaterTank, 1);
+    AddItem(TileType.Furnace, 1);
   }
 
   //-----------------------------------------------------------------------------------------------------------//

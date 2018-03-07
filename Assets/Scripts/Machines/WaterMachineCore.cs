@@ -4,7 +4,7 @@ using UnityEngine;
 using Terrain.Visuals;
 using Terrain.Data;
 
-public class WaterMachineCore : TileGOData, IInteractable
+public class WaterMachineCore : MachineBlock
 {
   private int dirtCount = 0;
   private float dirtPercentage = 0;
@@ -14,11 +14,7 @@ public class WaterMachineCore : TileGOData, IInteractable
 
   public List<WaterTank> waterTanks = new List<WaterTank>();
 
-  protected override void Start()
-  {
-  }
-
-  public void Interact()
+  public override void Interact()
   {
     // TODO: Do it when you put items in the machine slot
     if (dirtSlot.ItemGO != null)
@@ -53,6 +49,24 @@ public class WaterMachineCore : TileGOData, IInteractable
     }
   }
 
+  public override void Place()
+  {
+    //SetNeighboursToIsCoreless();
+    //CheckForCoreInNeighbours();
+  }
+
+  protected override void Start()
+  {
+    core = this;
+  }
+
+  public override bool Mine(int amount)
+  {
+    base.Mine(amount);
+    return true;
+    // TODO this is wrong
+  }
+
   public override void ShowInventory()
   {
     if (inventory == null)
@@ -63,10 +77,5 @@ public class WaterMachineCore : TileGOData, IInteractable
       inventory.SetActive(false);
     }
     base.ShowInventory();
-  }
-
-  public override void Mine(int amount)
-  {
-    base.Mine(amount);
   }
 }
