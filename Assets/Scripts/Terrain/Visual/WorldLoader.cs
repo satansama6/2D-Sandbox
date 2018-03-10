@@ -188,10 +188,105 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    private void RedrawDirtyTiles()
+    {
+      //TODO: new script for this
+      Sprite[] _maskSprites = new Sprite[4];
+      int i = 0;
+      while (dirtyTiles.Count != 0 && i++ < 100)
+      {
+        TileGOData _tileToRedraw = dirtyTiles.Dequeue();
+        if (_tileToRedraw.transform.childCount > 1)
+        {
+          if (_tileToRedraw.isMaskable)
+          {
+            // Check for all the 4 cells in the corner to see which outline we should place
+            int bitmaskValue = 0;
+
+            // UpLeft
+            if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 2;
+            }
+
+            if (_tileToRedraw.UpLeft() != null && _tileToRedraw.UpLeft().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 1;
+            }
+
+            if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 8;
+            }
+            _maskSprites[0] = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
+
+            bitmaskValue = 0;
+            // UpRight
+            if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 2;
+            }
+
+            if (_tileToRedraw.UpRight() != null && _tileToRedraw.UpRight().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 4;
+            }
+
+            if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 16;
+            }
+
+            _maskSprites[1] = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
+
+            bitmaskValue = 0;
+            // DownLeft
+            if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 64;
+            }
+
+            if (_tileToRedraw.DownLeft() != null && _tileToRedraw.DownLeft().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 32;
+            }
+            if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 8;
+            }
+            _maskSprites[2] = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
+
+            bitmaskValue = 0;
+            // DownRight
+
+            if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 64;
+            }
+
+            if (_tileToRedraw.DownRight() != null && _tileToRedraw.DownRight().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 128;
+            }
+
+            if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
+            {
+              bitmaskValue += 16;
+            }
+
+            _maskSprites[3] = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
+
+            //_tileToRedraw.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite =
+            //  CombineSprites.sharedInstance.SpriteCombine(_maskSprites);
+          }
+        }
+      }
+    }
+
     /// <summary>
     /// Recalcuate the visuals for every dirty tile (Mask and outline)
     /// </summary>
-    private void RedrawDirtyTiles()
+    private void RedrawDirtyTiles1()
     {
       while (dirtyTiles.Count != 0)
       {
@@ -218,6 +313,7 @@ namespace Terrain.Visuals
           {
             bitmaskValue += 8;
           }
+
           _tileToRedraw.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetOutline(bitmaskValue);
 
           _tileToRedraw.transform.GetChild(1).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
@@ -240,6 +336,7 @@ namespace Terrain.Visuals
           }
           _tileToRedraw.transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetOutline(bitmaskValue);
           _tileToRedraw.transform.GetChild(2).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
+
           bitmaskValue = 0;
           // DownLeft
           if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)

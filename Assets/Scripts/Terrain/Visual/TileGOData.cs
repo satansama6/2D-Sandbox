@@ -11,6 +11,8 @@ namespace Terrain.Visuals
     public int durability;
     public bool isBreakable = true;
 
+    public bool isMaskable = true;
+
     [HideInInspector]
     public bool isDirty;
 
