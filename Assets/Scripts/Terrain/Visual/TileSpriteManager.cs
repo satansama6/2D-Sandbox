@@ -162,21 +162,21 @@ public class TileSpriteManager : MonoBehaviour
     {
       case 0: return mask[12];
       case 1: return mask[4];
-      case 2: return mask[12];//null;// mask[12];
+      case 2: return null;// mask[12];
       case 3: return mask[9];
       case 4: return mask[7];
       case 6: return mask[9];
-      case 8: return mask[12];//null;// mask[12];
+      case 8: return null;// mask[12];
       case 9: return mask[11];
       case 10: return mask[2];
       case 11: return mask[2];
-      case 16: return mask[12];//null;// mask[12];
+      case 16: return null;// mask[12];
       case 18: return mask[1];
       case 20: return mask[10];
       case 22: return mask[1];
       case 32: return mask[5];
       case 40: return mask[11];
-      case 64: return mask[12];//null;// mask[12];//
+      case 64: return null;// mask[12];
       case 72: return mask[3];
       case 80: return mask[0];
       case 96: return mask[8];
