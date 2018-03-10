@@ -17,6 +17,6 @@ public class Test : MonoBehaviour
     float offsetX = transform.position.x / 8;
     float offsetY = transform.position.y / 2;
     rend.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
-    rend.material.SetTextureOffset("_EmissionTex", new Vector2(offsetX, offsetY));
+    rend.material.SetTextureOffset("_MaskTex", new Vector2(offsetX, offsetY));
   }
 }
