@@ -69,6 +69,9 @@ public class InventoryPanel : Inventory
     AddItem(TileType.PlantHolder, 1);
 
     AddItem(TileType.Furnace, 1);
+
+    AddItem(TileType.QuarryCore, 1);
+    AddItem(TileType.ManualLever, 1);
   }
 
   //-----------------------------------------------------------------------------------------------------------//
