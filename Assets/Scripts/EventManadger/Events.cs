@@ -13,7 +13,7 @@ namespace TypeSafeEventManager.Events
     public class OnItemAddedOrRemoved : GameEvent { }
   }
 
-  public static class MouseEvents
+  public static class InputEvents
   {
     public class OnMouseButton1DownEvent : GameEvent { }
 
@@ -24,6 +24,16 @@ namespace TypeSafeEventManager.Events
       public float delta;
 
       public OnMouseScrollEvent(float delta)
+      {
+        this.delta = delta;
+      }
+    }
+
+    public class OnControllPressedEvent : GameEvent
+    {
+      public float delta;
+
+      public OnControllPressedEvent(float delta)
       {
         this.delta = delta;
       }

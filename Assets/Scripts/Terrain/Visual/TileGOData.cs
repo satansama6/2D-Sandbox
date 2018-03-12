@@ -43,6 +43,7 @@ namespace Terrain.Visuals
           {
             InventoryPanel.sharedInstance.AddItem(type, 1);
           }
+          MarkTilesDirtyAround();
           gameObject.SetActive(false);
           return true;
         }
@@ -51,9 +52,25 @@ namespace Terrain.Visuals
     }
 
     //-----------------------------------------------------------------------------------------------------------//
+    private void MarkTilesDirtyAround()
+    {
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Up());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(UpLeft());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(UpRight());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Left());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Right());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Down());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(DownLeft());
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(DownRight());
+    }
+
+    //-----------------------------------------------------------------------------------------------------------//
 
     public virtual void Place()
     {
+      GetComponentInChildren<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetTileForPosition((int)transform.position.x, (int)transform.position.y, type);
+      WorldLoader.m_Terrain.dirtyTiles.Enqueue(this);
+      MarkTilesDirtyAround();
     }
 
     //-----------------------------------------------------------------------------------------------------------//

@@ -102,27 +102,6 @@ public class CharacterController2D : PhysicsObject
 
   //-----------------------------------------------------------------------------------------------------------//
 
-  ////TODO: call these functions from a global mouseController
-  //private void Mining1()
-  //{
-  //  Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-  //  Vector2 _mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-  //  Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
-  //  // change 3 to reachDistance
-  //  if (Vector2.Distance(_mousePosition, _characterPosition) < 3)
-  //  {
-  //    RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-
-  //    if (hit.collider != null && hit.collider.transform.tag == "Tile")
-  //    {
-  //      //TODO: 10-pickaxe strenght
-  //      hit.collider.GetComponent<TileGOData>().Mine(1);
-  //    }
-  //  }
-  //}
-
-  //-----------------------------------------------------------------------------------------------------------//
-
   private void PlaceBlockFromInventory()
   {
     Vector2 _mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
@@ -142,6 +121,7 @@ public class CharacterController2D : PhysicsObject
           // Set the tile
           WorldLoader.m_Terrain.SetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y, _itemID);
           WorldGeneration.m_Terrain.SetTileAt((int)_spawnTilePosition.x, (int)_spawnTilePosition.y, _itemID);
+
           // Remove the item from the inventory
           InventoryPanel.sharedInstance.GetItemInSelectedInventorySlot(true);
         }

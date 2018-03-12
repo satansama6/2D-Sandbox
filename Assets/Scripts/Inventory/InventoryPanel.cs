@@ -25,15 +25,15 @@ public class InventoryPanel : Inventory
 
   private void OnEnable()
   {
-    EventManagerTypeSafe.AddListener<MouseEvents.OnMouseScrollEvent>(OnMouseScrollEvent);
+    EventManagerTypeSafe.AddListener<InputEvents.OnMouseScrollEvent>(OnMouseScrollEvent);
   }
 
   private void OnDisable()
   {
-    EventManagerTypeSafe.RemoveListener<MouseEvents.OnMouseScrollEvent>(OnMouseScrollEvent);
+    EventManagerTypeSafe.RemoveListener<InputEvents.OnMouseScrollEvent>(OnMouseScrollEvent);
   }
 
-  private void OnMouseScrollEvent(MouseEvents.OnMouseScrollEvent arg)
+  private void OnMouseScrollEvent(InputEvents.OnMouseScrollEvent arg)
   {
     ChangeInventorySelectedSlot(arg.delta);
   }

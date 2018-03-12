@@ -195,89 +195,186 @@ namespace Terrain.Visuals
     {
       while (dirtyTiles.Count != 0)
       {
+        //TODO: We dont want to do this for the machines
+        // we need an if statement here
         TileGOData _tileToRedraw = dirtyTiles.Dequeue();
 
         // Check if we have the 4 cells for our tile (later we can remove this testing when we will have the cells for every tile)
-        if (_tileToRedraw.transform.childCount != 1)
+
+        // Check for all the 4 cells in the corner to see which outline we should place
+        int bitmaskValue = 0;
+
+        // UpLeft
+        if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
         {
-          // Check for all the 4 cells in the corner to see which outline we should place
-          int bitmaskValue = 0;
-
-          // UpLeft
-          if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 2;
-          }
-
-          if (_tileToRedraw.UpLeft() != null && _tileToRedraw.UpLeft().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 1;
-          }
-
-          if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 8;
-          }
-          _tileToRedraw.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetOutline(bitmaskValue);
-
-          _tileToRedraw.transform.GetChild(1).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
-
-          bitmaskValue = 0;
-          // UpRight
-          if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 2;
-          }
-
-          if (_tileToRedraw.UpRight() != null && _tileToRedraw.UpRight().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 4;
-          }
-
-          if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 16;
-          }
-          _tileToRedraw.transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetOutline(bitmaskValue);
-          _tileToRedraw.transform.GetChild(2).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
-          bitmaskValue = 0;
-          // DownLeft
-          if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 64;
-          }
-
-          if (_tileToRedraw.DownLeft() != null && _tileToRedraw.DownLeft().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 32;
-          }
-          if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 8;
-          }
-          _tileToRedraw.transform.GetChild(3).GetComponent<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetOutline(bitmaskValue);
-          _tileToRedraw.transform.GetChild(3).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
-          bitmaskValue = 0;
-          // DownRight
-
-          if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 64;
-          }
-
-          if (_tileToRedraw.DownRight() != null && _tileToRedraw.DownRight().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 128;
-          }
-
-          if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
-          {
-            bitmaskValue += 16;
-          }
-          _tileToRedraw.transform.GetChild(4).GetComponent<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetOutline(bitmaskValue);
-          _tileToRedraw.transform.GetChild(4).GetComponent<SpriteMask>().sprite = TileSpriteManager.sharedInstance.GetMask(bitmaskValue);
+          bitmaskValue += 2;
         }
+
+        if (_tileToRedraw.UpLeft() != null && _tileToRedraw.UpLeft().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 1;
+        }
+
+        if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 8;
+        }
+
+        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntTL(bitmaskValue);
+
+        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_TopLeftMaskTile", bitmaskValue);
+
+        bitmaskValue = 0;
+        // UpRight
+        if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 2;
+        }
+
+        if (_tileToRedraw.UpRight() != null && _tileToRedraw.UpRight().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 4;
+        }
+
+        if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 16;
+        }
+        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntTR(bitmaskValue);
+
+        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_TopRightMaskTile", bitmaskValue);
+
+        bitmaskValue = 0;
+        // DownLeft
+        if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 64;
+        }
+
+        if (_tileToRedraw.DownLeft() != null && _tileToRedraw.DownLeft().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 32;
+        }
+        if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 8;
+        }
+        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntBL(bitmaskValue);
+
+        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_BottomLeftMaskTile", bitmaskValue);
+
+        bitmaskValue = 0;
+        // DownRight
+
+        if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 64;
+        }
+
+        if (_tileToRedraw.DownRight() != null && _tileToRedraw.DownRight().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 128;
+        }
+
+        if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 16;
+        }
+        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntBR(bitmaskValue);
+
+        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_BottomRightMaskTile", bitmaskValue);
+
+        float _x = _tileToRedraw.transform.position.x;
+        float _y = _tileToRedraw.transform.position.y;
+
+        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetVector("_UVOffset", GetUVOffset(_x, _y));
       }
+    }
+
+    private Vector4 GetUVOffset(float _x, float _y)
+    {
+      Vector4 _v4 = new Vector4(0, 0, 0, 0);
+      _x %= 8;
+      _y %= 8;
+
+      switch ((int)_x)
+      {
+        case 0:
+          _v4.x = 0.05f;
+          break;
+
+        case 1:
+          _v4.x = 0.15f;
+          break;
+
+        case 2:
+          _v4.x = 0.25f;
+          break;
+
+        case 3:
+          _v4.x = 0.35f;
+          break;
+
+        case 4:
+          _v4.x = 0.45f;
+          break;
+
+        case 5:
+          _v4.x = 0.55f;
+          break;
+
+        case 6:
+          _v4.x = 0.65f;
+          break;
+
+        case 7:
+          _v4.x = 0.75f;
+          break;
+
+        default:
+          _v4.x = 0;
+          break;
+      }
+
+      switch ((int)_y)
+      {
+        case 0:
+          _v4.y = 0.05f;
+          break;
+
+        case 1:
+          _v4.y = 0.15f;
+          break;
+
+        case 2:
+          _v4.y = 0.25f;
+          break;
+
+        case 3:
+          _v4.y = 0.35f;
+          break;
+
+        case 4:
+          _v4.y = 0.45f;
+          break;
+
+        case 5:
+          _v4.y = 0.55f;
+          break;
+
+        case 6:
+          _v4.y = 0.65f;
+          break;
+
+        case 7:
+          _v4.y = 0.75f;
+          break;
+
+        default:
+          _v4.y = 0;
+          break;
+      }
+      return _v4;
     }
   }
 }

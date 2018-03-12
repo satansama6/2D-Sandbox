@@ -11,6 +11,8 @@ public class InputManager : MonoBehaviour
   public KeyCode mouseButton1 = KeyCode.Mouse0;
   public KeyCode mouseButton2 = KeyCode.Mouse1;
 
+  public KeyCode controlKey = KeyCode.LeftControl;
+
   // There is no actual way to change the mouse scroll wheel,
   // what we can do is add secondary buttons for scrollwheel up and down and change those
   public string mouseScrollWheel = "Mouse ScrollWheel";
@@ -25,12 +27,12 @@ public class InputManager : MonoBehaviour
   {
     if (Input.GetKeyDown(mouseButton1))
     {
-      EventManagerTypeSafe.TriggerEvent(new MouseEvents.OnMouseButton1DownEvent());
+      EventManagerTypeSafe.TriggerEvent(new InputEvents.OnMouseButton1DownEvent());
     }
 
     if (Input.GetKeyDown(mouseButton2))
     {
-      EventManagerTypeSafe.TriggerEvent(new MouseEvents.OnMouseButton2DownEvent());
+      EventManagerTypeSafe.TriggerEvent(new InputEvents.OnMouseButton2DownEvent());
     }
 
     // Mouse Scroll
@@ -38,7 +40,11 @@ public class InputManager : MonoBehaviour
 
     if (scrollAmount != 0)
     {
-      EventManagerTypeSafe.TriggerEvent(new MouseEvents.OnMouseScrollEvent(scrollAmount));
+      EventManagerTypeSafe.TriggerEvent(new InputEvents.OnMouseScrollEvent(scrollAmount));
+      if (Input.GetKey(controlKey))
+      {
+        EventManagerTypeSafe.TriggerEvent(new InputEvents.OnControllPressedEvent(scrollAmount));
+      }
     }
   }
 }
