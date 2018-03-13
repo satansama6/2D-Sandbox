@@ -97,9 +97,12 @@ MonoBehaviour:
   type: 11
   durability: 10
   isBreakable: 1
-  isDirty: 0
+  isMaskable: 0
   itemDrop: 0b000000
   inventory: {fileID: 0}
+  isCoreless: 1
+  core: {fileID: 0}
+  allowedCores: 
   range: 10
 --- !u!212 &212508852363431540
 SpriteRenderer:

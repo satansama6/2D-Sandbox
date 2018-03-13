@@ -85,7 +85,7 @@ MonoBehaviour:
   type: 14
   durability: 10
   isBreakable: 1
-  isDirty: 0
+  isMaskable: 0
   itemDrop: 0e000000
   inventory: {fileID: 0}
 --- !u!114 &114986079413423888

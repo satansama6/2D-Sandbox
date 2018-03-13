@@ -12,6 +12,10 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Requests new gameObjects from the pool and places them in the correct positions
+    /// </summary>
+    /// <param name="_tiles"> The data for the tiles </param>
     public void DrawChunk(TileData[,] _tiles)
     {
       GameObject _TileType = null;
@@ -34,12 +38,53 @@ namespace Terrain.Visuals
           WorldLoader.m_Terrain.dirtyTiles.Enqueue(_TileType.GetComponent<TileGOData>());
         }
       }
-
-      // here we need to dirty 1 more row/coloumn of tiles around this chunk
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Marks as dirty all the tiles that are on the edge of this chunk
+    /// </summary>
+    public void DirtyEdgeTiles()
+    {
+      //Top side
+      int _y = 0;
+      int _x = 0;
+      for (_x = 0; _x < ChunkData.m_Size; _x++)
+      {
+        WorldLoader.m_Terrain.dirtyTiles.Enqueue(GetTileAt(_x, _y).GetComponent<TileGOData>());
+      }
+
+      // Bottom
+      _y = ChunkData.m_Size - 1;
+      for (_x = 0; _x < ChunkData.m_Size; _x++)
+      {
+        WorldLoader.m_Terrain.dirtyTiles.Enqueue(GetTileAt(_x, _y).GetComponent<TileGOData>());
+      }
+
+      // Left
+      _x = 0;
+      for (_y = 0; _y < ChunkData.m_Size; _y++)
+      {
+        WorldLoader.m_Terrain.dirtyTiles.Enqueue(GetTileAt(_x, _y).GetComponent<TileGOData>());
+      }
+
+      // Right
+      _x = ChunkData.m_Size - 1;
+      for (_y = 0; _y < ChunkData.m_Size; _y++)
+      {
+        WorldLoader.m_Terrain.dirtyTiles.Enqueue(GetTileAt(_x, _y).GetComponent<TileGOData>());
+      }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// Returns the tile from this chunk at x and y
+    /// </summary>
+    /// <param name="x"> x position </param>
+    /// <param name="y"> y position </param>
+    /// <returns></returns>
     public GameObject GetTileAt(int x, int y)
     {
       return tileGO[x, y];
@@ -47,6 +92,12 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Sets a tile with type <type> at x and y
+    /// </summary>
+    /// <param name="x"> x position </param>
+    /// <param name="y"> y position</param>
+    /// <param name="type"> Tile type</param>
     public void SetTileAt(int x, int y, TileType type)
     {
       GameObject _TileType = null;

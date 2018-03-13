@@ -37,8 +37,8 @@ namespace Terrain.Visuals
         timer = 0;
         FindChunksToLoad();
         FindChunksToUnload();
-        RedrawDirtyTiles();
       }
+      RedrawDirtyTiles();
     }
 
     //-----------------------------------------------------------------------------------------------------------//
@@ -66,50 +66,88 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    //In world positions these are multiplied with chunks size
     // Chunk(5,5)= 5*chunk.size, 5*chunk.size in world
+
+    /// <summary>
+    /// Draws the chunk visuals at x and y
+    /// </summary>
+    /// <param name="x"> x position in chunk space </param>
+    /// <param name="y"> y position in chunk space </param>
     private void LoadChunkAt(int x, int y)
     {
       int _chunkX = x * ChunkData.m_Size;    // world positions
       int _chunkY = y * ChunkData.m_Size;
-      GameObject _chunk = null;
+      // Check if the chunk is not loaded yet
       if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY)) == false)
       {
+        GameObject _chunk = null;
+        // Request new chunkGO from pool
         _chunk = m_ChunkGO.GetComponent<PooledMonobehaviour>().Get<PooledMonobehaviour>().gameObject;
         _chunk.transform.position = new Vector3(_chunkX, _chunkY, 0);
 
         _chunk.transform.name = "Chunk_" + x + "_" + y;
         _chunk.transform.parent = transform;
+
+        // Add the new chunk to the chunkMap
         m_ChunkMap.Add(new Vector2(_chunkX, _chunkY), _chunk.GetComponent<ChunkVisual>());
 
+        // Check if the chunk is outside of our generated world
         if (x > 0 && x < WorldGeneration.m_ChunkMap.GetLength(0) && y > 0 && y < WorldGeneration.m_ChunkMap.GetLength(1))
         {
+          // Draw the actual tiles for the chuk
           _chunk.GetComponent<ChunkVisual>().DrawChunk(WorldGeneration.m_ChunkMap[x, y].GetTiles());
+
+          // Call dirty edge tiles for the neighbour chunks
+          if (m_ChunkMap.ContainsKey(new Vector2(_chunkX - ChunkData.m_Size, _chunkY)))
+          {
+            m_ChunkMap[new Vector2(_chunkX - ChunkData.m_Size, _chunkY)].DirtyEdgeTiles();
+          }
+
+          if (m_ChunkMap.ContainsKey(new Vector2(_chunkX + ChunkData.m_Size, _chunkY)))
+          {
+            m_ChunkMap[new Vector2(_chunkX + ChunkData.m_Size, _chunkY)].DirtyEdgeTiles();
+          }
+
+          if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY - ChunkData.m_Size)))
+          {
+            m_ChunkMap[new Vector2(_chunkX, _chunkY - ChunkData.m_Size)].DirtyEdgeTiles();
+          }
+
+          if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY + ChunkData.m_Size)))
+          {
+            m_ChunkMap[new Vector2(_chunkX, _chunkY + ChunkData.m_Size)].DirtyEdgeTiles();
+          }
         }
       }
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Finds the chunks that the distace to the player is larger than drawDistance
+    /// </summary>
     private void FindChunksToUnload()
     {
-      List<ChunkVisual> _deleteChunks = new List<ChunkVisual>(m_ChunkMap.Values);
-      Queue<ChunkVisual> _deleteQueue = new Queue<ChunkVisual>();
+      List<ChunkVisual> _unloadChunks = new List<ChunkVisual>(m_ChunkMap.Values);
+      Queue<ChunkVisual> _unloadQueue = new Queue<ChunkVisual>();
 
-      for (int i = 0; i < _deleteChunks.Count; i++)
+      // Check for all of the loaded chunks
+      for (int i = 0; i < _unloadChunks.Count; i++)
       {
-        float _distance = Vector3.Distance(m_Character.transform.position, _deleteChunks[i].transform.position);
+        float _distance = Vector3.Distance(m_Character.transform.position, _unloadChunks[i].transform.position);
 
         // There was an issue where we kept loading and unloading the chunks
         // thats why there is a +2 here so we only unload if we passed that number
         if (_distance > (m_RenderDisatance + 2) * ChunkData.m_Size)
         {
-          _deleteQueue.Enqueue(_deleteChunks[i]);
+          // Queue the chunks that needs to be deleted. If we unload them here that will fuck up the deleteChunks order
+          _unloadQueue.Enqueue(_unloadChunks[i]);
         }
       }
-      while (_deleteQueue.Count > 0)
+      // Unload all the chunks that needs to be unloaded
+      while (_unloadQueue.Count > 0)
       {
-        ChunkVisual _chunk = _deleteQueue.Dequeue();
+        ChunkVisual _chunk = _unloadQueue.Dequeue();
         m_ChunkMap.Remove(_chunk.transform.position);
         UnLoadChunk(_chunk.gameObject);
       }
@@ -117,6 +155,10 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Unloads the chunk
+    /// </summary>
+    /// <param name="_chunk"> Chunk to unload </param>
     private void UnLoadChunk(GameObject _chunk)
     {
       foreach (Transform child in _chunk.transform)
@@ -128,17 +170,27 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public GameObject GetTileAt(float x, float y)
+    /// <summary>
+    /// Returns the tileGO at x and y
+    /// </summary>
+    /// <param name="x"> x position </param>
+    /// <param name="y"> y position </param>
+    /// <returns></returns>
+    public GameObject GetTileAt(int x, int y)
     {
-      x = Mathf.Round(x);
-      y = Mathf.Round(y);
+      //  x = Mathf.Round(x);
+      // y = Mathf.Round(y);
 
       // No need to devide with 16
-      int _chunkX = (int)(x / 16) * 16;
-      int _chunkY = (int)(y / 16) * 16;
+      //  int _chunkX = (int)(x / 16) * 16;
+      //  int _chunkY = (int)(y / 16) * 16;
 
-      int _tileX = (int)x % ChunkData.m_Size;
-      int _tileY = (int)y % ChunkData.m_Size;
+      int _tileX = x % ChunkData.m_Size;
+      int _tileY = y % ChunkData.m_Size;
+
+      int _chunkX = x - _tileX;
+      int _chunkY = y - _tileY;
+
       if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY)))
       {
         return m_ChunkMap[new Vector2(_chunkX, _chunkY)].GetTileAt(_tileX, _tileY);
@@ -148,17 +200,19 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
-    public TileType GetTileIDAt(float x, float y)
+    /// <summary>
+    /// Returns the Tile type at x and y
+    /// </summary>
+    /// <param name="x"> x position </param>
+    /// <param name="y"> y position </param>
+    /// <returns> TileType </returns>
+    public TileType GetTileTypeAt(int x, int y)
     {
-      x = Mathf.Round(x);
-      y = Mathf.Round(y);
+      int _tileX = x % ChunkData.m_Size;
+      int _tileY = y % ChunkData.m_Size;
 
-      // No need to devide with 16
-      int _chunkX = (int)(x / 16) * 16;
-      int _chunkY = (int)(y / 16) * 16;
-
-      int _tileX = (int)x % ChunkData.m_Size;
-      int _tileY = (int)y % ChunkData.m_Size;
+      int _chunkX = x - _tileX;
+      int _chunkY = y - _tileY;
       if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY)))
       {
         return m_ChunkMap[new Vector2(_chunkX, _chunkY)].GetTileAt(_tileX, _tileY).GetComponent<TileGOData>().type;
@@ -168,17 +222,29 @@ namespace Terrain.Visuals
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Sets the tile to tileType at x and y
+    /// </summary>
+    /// <param name="x"> x position</param>
+    /// <param name="y"> y position </param>
+    /// <param name="type"> Tile type  </param>
     public void SetTileAt(int x, int y, TileType type)
     {
       // We need this division and multiplication in the if below
-      int _chunkX = x / ChunkData.m_Size;
-      int _chunkY = y / ChunkData.m_Size;
+      //int _chunkX = x / ChunkData.m_Size;
+      //int _chunkY = y / ChunkData.m_Size;
+
+      //int _tileX = x % ChunkData.m_Size;
+      //int _tileY = y % ChunkData.m_Size;
 
       int _tileX = x % ChunkData.m_Size;
       int _tileY = y % ChunkData.m_Size;
-      if (m_ChunkMap.ContainsKey(new Vector2(_chunkX * ChunkData.m_Size, _chunkY * ChunkData.m_Size)) == true)
+
+      int _chunkX = x - _tileX;
+      int _chunkY = y - _tileY;
+      if (m_ChunkMap.ContainsKey(new Vector2(_chunkX, _chunkY)) == true)
       {
-        m_ChunkMap[new Vector2(_chunkX * ChunkData.m_Size, _chunkY * ChunkData.m_Size)].SetTileAt(_tileX, _tileY, type);
+        m_ChunkMap[new Vector2(_chunkX, _chunkY)].SetTileAt(_tileX, _tileY, type);
       }
       else
       {
@@ -189,43 +255,22 @@ namespace Terrain.Visuals
     //-----------------------------------------------------------------------------------------------------------//
 
     /// <summary>
-    /// Recalcuate the visuals for every dirty tile (Mask and outline)
+    /// Recalculates the dirty tiles corners for the shader
     /// </summary>
     private void RedrawDirtyTiles()
     {
       while (dirtyTiles.Count != 0)
       {
-        //TODO: We dont want to do this for the machines
-        // we need an if statement here
         TileGOData _tileToRedraw = dirtyTiles.Dequeue();
 
-        // Check if we have the 4 cells for our tile (later we can remove this testing when we will have the cells for every tile)
-
-        // Check for all the 4 cells in the corner to see which outline we should place
-        int bitmaskValue = 0;
-
-        // UpLeft
-        if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
-        {
-          bitmaskValue += 2;
-        }
+        // Create the bitMask with the neighbours
+        byte bitmaskValue = 0;
 
         if (_tileToRedraw.UpLeft() != null && _tileToRedraw.UpLeft().type != _tileToRedraw.type)
         {
           bitmaskValue += 1;
         }
 
-        if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
-        {
-          bitmaskValue += 8;
-        }
-
-        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntTL(bitmaskValue);
-
-        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_TopLeftMaskTile", bitmaskValue);
-
-        bitmaskValue = 0;
-        // UpRight
         if (_tileToRedraw.Up() != null && _tileToRedraw.Up().type != _tileToRedraw.type)
         {
           bitmaskValue += 2;
@@ -236,35 +281,20 @@ namespace Terrain.Visuals
           bitmaskValue += 4;
         }
 
+        if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
+        {
+          bitmaskValue += 8;
+        }
+
         if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
         {
           bitmaskValue += 16;
-        }
-        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntTR(bitmaskValue);
-
-        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_TopRightMaskTile", bitmaskValue);
-
-        bitmaskValue = 0;
-        // DownLeft
-        if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
-        {
-          bitmaskValue += 64;
         }
 
         if (_tileToRedraw.DownLeft() != null && _tileToRedraw.DownLeft().type != _tileToRedraw.type)
         {
           bitmaskValue += 32;
         }
-        if (_tileToRedraw.Left() != null && _tileToRedraw.Left().type != _tileToRedraw.type)
-        {
-          bitmaskValue += 8;
-        }
-        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntBL(bitmaskValue);
-
-        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_BottomLeftMaskTile", bitmaskValue);
-
-        bitmaskValue = 0;
-        // DownRight
 
         if (_tileToRedraw.Down() != null && _tileToRedraw.Down().type != _tileToRedraw.type)
         {
@@ -276,21 +306,118 @@ namespace Terrain.Visuals
           bitmaskValue += 128;
         }
 
-        if (_tileToRedraw.Right() != null && _tileToRedraw.Right().type != _tileToRedraw.type)
-        {
-          bitmaskValue += 16;
-        }
-        bitmaskValue = TileSpriteManager.sharedInstance.GetMaskIntBR(bitmaskValue);
+        // Cache the material
+        Material _tileMaterial = _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material;
 
-        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetFloat("_BottomRightMaskTile", bitmaskValue);
+        // Get the mask index
+        byte _value = GetMaskIntTL(bitmaskValue & Bits.TOP_LEFT);
+
+        // Set the value in the shader
+        _tileMaterial.SetFloat("_TopLeftMaskTile", _value);
+
+        _value = GetMaskIntTR(bitmaskValue & Bits.TOP_RIGHT);
+
+        _tileMaterial.SetFloat("_TopRightMaskTile", _value);
+
+        _value = GetMaskIntBL(bitmaskValue & Bits.BOTTOM_LEFT);
+
+        _tileMaterial.SetFloat("_BottomLeftMaskTile", _value);
+
+        _value = GetMaskIntBR(bitmaskValue & Bits.BOTTOL_RIGHT);
+
+        _tileMaterial.SetFloat("_BottomRightMaskTile", _value);
 
         float _x = _tileToRedraw.transform.position.x;
         float _y = _tileToRedraw.transform.position.y;
 
-        _tileToRedraw.GetComponentInChildren<SpriteRenderer>().material.SetVector("_UVOffset", GetUVOffset(_x, _y));
+        // Change the offset of the shader based on the tiles position
+        _tileMaterial.SetVector("_UVOffset", GetUVOffset(_x, _y));
       }
     }
 
+    #region GetMaskForCorners
+
+    public byte GetMaskIntTL(int maskValue)
+    {
+      switch (maskValue)
+      {
+        case 0: return 12;
+        case 1: return 7;
+        case 2: return 6;
+        case 3: return 9;
+        case 8: return 5;
+        case 9: return 11;
+        case 10: return 14;
+        case 11: return 0;
+        default:
+          Debug.LogWarning("Bitmask value not implemented in TL: " + maskValue);
+          return 255;
+      }
+    }
+
+    public byte GetMaskIntTR(int maskValue)
+    {
+      switch (maskValue)
+      {
+        case 0: return 12;
+        case 2: return 7;
+        case 4: return 6;
+        case 6: return 9;
+        case 16: return 4;
+        case 18: return 13;
+        case 20: return 10;
+        case 22: return 1;
+        default:
+          Debug.LogWarning("Bitmask value not implemented in TR: " + maskValue);
+          return 255;
+      }
+    }
+
+    public byte GetMaskIntBL(int maskValue)
+    {
+      switch (maskValue)
+      {
+        case 0: return 12;
+        case 8: return 7;
+        case 32: return 5;
+        case 40: return 11;
+        case 64: return 4;
+        case 72: return 13;
+        case 96: return 8;
+        case 104: return 2;
+
+        default:
+          Debug.LogWarning("Bitmask value not implemented in BL: " + maskValue);
+          return 255;
+      }
+    }
+
+    public byte GetMaskIntBR(int maskValue)
+    {
+      switch (maskValue)
+      {
+        case 0: return 12;
+        case 16: return 6;
+        case 64: return 5;
+        case 80: return 14;
+        case 128: return 4;
+        case 144: return 10;
+        case 192: return 8;
+        case 208: return 3;
+        default:
+          Debug.LogWarning("Bitmask value not implemented: " + maskValue);
+          return 255;
+      }
+    }
+
+    #endregion GetMaskForCorners
+
+    /// <summary>
+    /// Returns the offset of the shaders UV based on x and y
+    /// </summary>
+    /// <param name="_x"> x position </param>
+    /// <param name="_y"> y position </param>
+    /// <returns> Mask index in the mask texture </returns>
     private Vector4 GetUVOffset(float _x, float _y)
     {
       Vector4 _v4 = new Vector4(0, 0, 0, 0);

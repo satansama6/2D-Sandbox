@@ -144,7 +144,7 @@ MonoBehaviour:
   type: 10
   durability: 10
   isBreakable: 1
-  isDirty: 0
+  isMaskable: 0
   itemDrop: 0a000000
   inventory: {fileID: 0}
   waterFill: {fileID: 1755041110386650}

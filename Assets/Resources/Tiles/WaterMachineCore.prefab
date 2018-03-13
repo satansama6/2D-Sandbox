@@ -97,9 +97,12 @@ MonoBehaviour:
   type: 9
   durability: 10
   isBreakable: 1
-  isDirty: 0
+  isMaskable: 0
   itemDrop: 09000000
   inventory: {fileID: 0}
+  isCoreless: 1
+  core: {fileID: 0}
+  allowedCores: 
   waterTanks: []
 --- !u!212 &212979429926978644
 SpriteRenderer:

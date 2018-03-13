@@ -11,8 +11,7 @@ namespace Terrain.Visuals
     public int durability;
     public bool isBreakable = true;
 
-    [HideInInspector]
-    public bool isDirty;
+    public bool isMaskable = true;
 
     public List<TileType> itemDrop = new List<TileType>();
 
@@ -52,24 +51,46 @@ namespace Terrain.Visuals
     }
 
     //-----------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// Adds every tile around this one to the dirty queue
+    /// </summary>
     private void MarkTilesDirtyAround()
     {
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Up());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(UpLeft());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(UpRight());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Left());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Right());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(Down());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(DownLeft());
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(DownRight());
+      AddToDirtyQueue(Up());
+      AddToDirtyQueue(UpLeft());
+      AddToDirtyQueue(UpRight());
+      AddToDirtyQueue(Left());
+      AddToDirtyQueue(Right());
+      AddToDirtyQueue(Down());
+      AddToDirtyQueue(DownLeft());
+      AddToDirtyQueue(DownRight());
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
+    /// <summary>
+    /// Adds _tileToAdd tile into the dirty queue
+    /// </summary>
+    /// <param name="_tileToAdd"> The tile to be added to the dirty queue</param>
+    public void AddToDirtyQueue(TileGOData _tileToAdd)
+    {
+      if (_tileToAdd.isMaskable)
+      {
+        WorldLoader.m_Terrain.dirtyTiles.Enqueue(_tileToAdd);
+      }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// Gets called when we place a block
+    /// </summary>
     public virtual void Place()
     {
+      // Set the sprite the correct sprite for the tile based on its position
       GetComponentInChildren<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetTileForPosition((int)transform.position.x, (int)transform.position.y, type);
-      WorldLoader.m_Terrain.dirtyTiles.Enqueue(this);
+      AddToDirtyQueue(this);
       MarkTilesDirtyAround();
     }
 
@@ -96,126 +117,75 @@ namespace Terrain.Visuals
 
     #region NeighbourTiles
 
+    public TileGOData CheckNeighbour(int _x, int _y)
+    {
+      GameObject GO = WorldLoader.m_Terrain.GetTileAt(_x, _y);
+      if (GO != null)
+      {
+        return GO.GetComponent<TileGOData>();
+      }
+      else
+      {
+        return null;
+      }
+    }
+
     /// <summary>
     ///
     /// </summary>
     /// <returns></returns>
     public TileGOData UpLeft()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x - 1, (int)transform.position.y + 1);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x - 1, (int)transform.position.y + 1);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData Up()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x, (int)transform.position.y + 1);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x, (int)transform.position.y + 1);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData UpRight()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x + 1, (int)transform.position.y + 1);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x + 1, (int)transform.position.y + 1);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData Left()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x - 1, (int)transform.position.y);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x - 1, (int)transform.position.y);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData Right()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x + 1, (int)transform.position.y);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x + 1, (int)transform.position.y);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData DownLeft()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x - 1, (int)transform.position.y - 1);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x - 1, (int)transform.position.y - 1);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData Down()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x, (int)transform.position.y - 1);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x, (int)transform.position.y - 1);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
 
     public TileGOData DownRight()
     {
-      GameObject GO = WorldLoader.m_Terrain.GetTileAt((int)transform.position.x + 1, (int)transform.position.y - 1);
-      if (GO != null)
-      {
-        return GO.GetComponent<TileGOData>();
-      }
-      else
-      {
-        return null;
-      }
+      return CheckNeighbour((int)transform.position.x + 1, (int)transform.position.y - 1);
     }
 
     #endregion NeighbourTiles

@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class Test : MonoBehaviour
 {
-  public Renderer rend;
+  private byte a = 11;
 
   private void Start()
   {
-    rend = GetComponent<Renderer>();
+    byte b = 2;
+
+    if ((a & b) != 0)
+    {
+      Debug.Log((a & b));
+    }
   }
 
   private void Update()
   {
-    float offsetX = transform.position.x / 8;
-    float offsetY = transform.position.y / 2;
-    rend.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
-    rend.material.SetTextureOffset("_MaskTex", new Vector2(offsetX, offsetY));
   }
 }

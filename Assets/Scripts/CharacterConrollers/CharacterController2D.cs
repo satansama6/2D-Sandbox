@@ -96,7 +96,7 @@ public class CharacterController2D : PhysicsObject
     // If the distance between the character and the place where we clicked is smaller than the reach distance then we call the mine fucntion for that tile
     if (Vector2.Distance(_mousePosition, _characterPosition) < reachDistance)
     {
-      WorldLoader.m_Terrain.GetTileAt(_mousePosition.x, _mousePosition.y).GetComponent<TileGOData>().Mine(miningStregth);
+      WorldLoader.m_Terrain.GetTileAt((int)(_mousePosition.x + 0.5f), (int)(_mousePosition.y + 0.5f)).GetComponent<TileGOData>().Mine(miningStregth);
     }
   }
 
@@ -172,7 +172,7 @@ public class CharacterController2D : PhysicsObject
   {
     // If we have a tile with IInteract interface at the characters position then we call the interact function on it.
     Vector2 _characterPosition = new Vector2(transform.position.x, transform.position.y);
-    IInteractable _tileToInteract = WorldLoader.m_Terrain.GetTileAt(_characterPosition.x, _characterPosition.y).GetComponent<IInteractable>();
+    IInteractable _tileToInteract = WorldLoader.m_Terrain.GetTileAt((int)_characterPosition.x, (int)_characterPosition.y).GetComponent<IInteractable>();
 
     if (_tileToInteract != null)
     {
