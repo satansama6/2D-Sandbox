@@ -83,9 +83,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  tileVisual:
+  - {fileID: 0}
   durability: 0
   isBreakable: 0
-  isDirty: 0
+  isMaskable: 1
+  isConnectable: 0
   itemDrop: 
   inventory: {fileID: 0}
 --- !u!114 &114194580986333482

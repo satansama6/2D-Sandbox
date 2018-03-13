@@ -8,15 +8,28 @@ namespace Terrain.Visuals
   public class TileGOData : MonoBehaviour
   {
     public TileType type;
+
+    public Sprite[] tileVisual;
+
     public int durability;
+
     public bool isBreakable = true;
 
     public bool isMaskable = true;
+
+    public bool isConnectable = true;
 
     public List<TileType> itemDrop = new List<TileType>();
 
     [HideInInspector]
     public GameObject inventory;
+
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+      spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
 
     protected virtual void Start()
     {
@@ -89,7 +102,7 @@ namespace Terrain.Visuals
     public virtual void Place()
     {
       // Set the sprite the correct sprite for the tile based on its position
-      GetComponentInChildren<SpriteRenderer>().sprite = TileSpriteManager.sharedInstance.GetTileForPosition((int)transform.position.x, (int)transform.position.y, type);
+      UpdateVisual((int)transform.position.x, (int)transform.position.y);
       AddToDirtyQueue(this);
       MarkTilesDirtyAround();
     }
@@ -189,5 +202,26 @@ namespace Terrain.Visuals
     }
 
     #endregion NeighbourTiles
+
+    //-----------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// Changes the tiles visual based on its position
+    /// </summary>
+    /// <param name="_x"> x position </param>
+    /// <param name="_y"> y position </param>
+    public void UpdateVisual(int _x, int _y)
+    {
+      if (isConnectable)
+      {
+        _x = (int)transform.position.x % 8;
+        _y = (int)transform.position.y % 8;
+        spriteRenderer.sprite = tileVisual[(56 - _y * 8) + _x];
+      }
+      else
+      {
+        spriteRenderer.sprite = tileVisual[0];
+      }
+    }
   }
 }

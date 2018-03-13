@@ -17,8 +17,6 @@ public class Pool : MonoBehaviour
     m_SharedInstance = this;
   }
 
-  //TODO: make this a singelton
-
   public static Pool GetPool(PooledMonobehaviour prefab)
   {
     if (m_Pools.ContainsKey(prefab))
