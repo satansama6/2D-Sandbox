@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4189485925090026}
   - component: {fileID: 114194580986333482}
-  - component: {fileID: 114085114107373264}
+  - component: {fileID: 114743905232280164}
   m_Layer: 0
   m_Name: Empty
   m_TagString: Untagged
@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1785331596907636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 160, y: 176, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4521057491370254}
@@ -71,26 +71,6 @@ Transform:
   m_Father: {fileID: 4189485925090026}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114085114107373264
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1785331596907636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc963a6fc5a476449b5c0b0f4300e1c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  tileVisual:
-  - {fileID: 0}
-  durability: 0
-  isBreakable: 0
-  isMaskable: 1
-  isConnectable: 0
-  itemDrop: 
-  inventory: {fileID: 0}
 --- !u!114 &114194580986333482
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,6 +83,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialPoolSize: 100
+--- !u!114 &114743905232280164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1785331596907636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac09a5582801a24e8e86056f0f612cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  tileVisual:
+  - {fileID: 0}
+  durability: 0
+  isBreakable: 0
+  isMaskable: 0
+  isConnectable: 0
+  itemDrop: 
+  inventory: {fileID: 0}
 --- !u!212 &212590609328459128
 SpriteRenderer:
   m_ObjectHideFlags: 1

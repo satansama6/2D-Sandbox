@@ -10,7 +10,7 @@ namespace Terrain.Data
   public class ChunkData
   {
     public static int m_Size = 16;
-    private TileData[,] m_Tiles;
+    private TileData[] m_Tiles;
 
     public int x;
     public int y;
@@ -21,12 +21,12 @@ namespace Terrain.Data
     {
       this.x = x;
       this.y = y;
-      m_Tiles = new TileData[m_Size, m_Size];
+      m_Tiles = new TileData[m_Size * m_Size];
       for (int _x = 0; _x < m_Size; _x++)
       {
         for (int _y = 0; _y < m_Size; _y++)
         {
-          m_Tiles[_x, _y] = new TileData(0);
+          m_Tiles[_x + _y * m_Size] = new TileData(0);
         }
       }
     }
@@ -41,13 +41,13 @@ namespace Terrain.Data
     {
       this.x = x * ChunkData.m_Size;
       this.y = y * ChunkData.m_Size;
-      m_Tiles = new TileData[m_Size, m_Size];
+      m_Tiles = new TileData[m_Size * m_Size];
 
       for (int _x = 0; _x < m_Size; _x++)
       {
         for (int _y = 0; _y < m_Size; _y++)
         {
-          m_Tiles[_x, _y] = new TileData(tiles[_x, _y].type);
+          m_Tiles[_x + _y * m_Size] = new TileData(tiles[_x, _y].type);
         }
       }
     }
@@ -58,13 +58,13 @@ namespace Terrain.Data
     {
       this.x = x * ChunkData.m_Size;
       this.y = y * ChunkData.m_Size;
-      m_Tiles = new TileData[m_Size, m_Size];
+      m_Tiles = new TileData[m_Size * m_Size];
 
       for (int _x = 0; _x < m_Size; _x++)
       {
         for (int _y = 0; _y < m_Size; _y++)
         {
-          m_Tiles[_x, _y] = new TileData(tiles[_x, _y]);
+          m_Tiles[_x + _y * m_Size] = new TileData(tiles[_x, _y]);
         }
       }
     }
@@ -75,7 +75,7 @@ namespace Terrain.Data
     /// Returns all tiles in this chunk
     /// </summary>
     /// <returns></returns>
-    public TileData[,] GetTiles()
+    public TileData[] GetTiles()
     {
       return m_Tiles;
     }
@@ -90,12 +90,12 @@ namespace Terrain.Data
     /// <param name="type"> Type to change the tile </param>
     public void SetTileAt(int x, int y, TileType type)
     {
-      m_Tiles[x, y].type = type;
+      m_Tiles[x + y * m_Size].type = type;
     }
 
     public TileType GetTileAt(int x, int y)
     {
-      return m_Tiles[x, y].type;
+      return m_Tiles[x + y * m_Size].type;
     }
   }
 }

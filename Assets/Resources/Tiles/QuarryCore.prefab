@@ -106,7 +106,8 @@ MonoBehaviour:
   isCoreless: 1
   core: {fileID: 0}
   allowedCores: 
-  range: 10
+  range: 20
+  direction: 1
 --- !u!212 &212508852363431540
 SpriteRenderer:
   m_ObjectHideFlags: 1

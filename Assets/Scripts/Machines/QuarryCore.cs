@@ -9,6 +9,8 @@ public class QuarryCore : MachineBlock
   // The amount of tiles we are mining from the quarry
   public int range = 10;
 
+  public int direction = -1;
+
   private Vector3 startingPosition;
 
   private int x;
@@ -28,7 +30,8 @@ public class QuarryCore : MachineBlock
 
     x = (int)transform.position.x;
     y = (int)transform.position.y;
-    x++;
+    //x++;
+    x -= direction;
   }
 
   public override void Interact()
@@ -47,10 +50,11 @@ public class QuarryCore : MachineBlock
   //TODO: boolean to move backward and change position accordingly
   private void MoveToNextPosition()
   {
-    x++;
+    //x++;
+    x -= direction;
     if (Mathf.Abs(x - startingPosition.x) == range)
     {
-      x -= range;
+      x = (int)startingPosition.x;
       y--;
     }
   }

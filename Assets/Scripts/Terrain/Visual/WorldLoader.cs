@@ -92,10 +92,11 @@ namespace Terrain.Visuals
         m_ChunkMap.Add(new Vector2(_chunkX, _chunkY), _chunk.GetComponent<ChunkVisual>());
 
         // Check if the chunk is outside of our generated world
-        if (x > 0 && x < WorldGeneration.m_ChunkMap.GetLength(0) && y > 0 && y < WorldGeneration.m_ChunkMap.GetLength(1))
+        if (x > 0 && x < WorldGeneration.m_ChunkMap.GetLength(0) && y > 0 && y < WorldGeneration.m_ChunkMap.GetLength(0))
+
         {
           // Draw the actual tiles for the chuk
-          _chunk.GetComponent<ChunkVisual>().DrawChunk(WorldGeneration.m_ChunkMap[x, y].GetTiles());
+          _chunk.GetComponent<ChunkVisual>().DrawChunk(WorldGeneration.m_ChunkMap[x + y * WorldGeneration.worldWidth].GetTiles());
 
           // Call dirty edge tiles for the neighbour chunks
           if (m_ChunkMap.ContainsKey(new Vector2(_chunkX - ChunkData.m_Size, _chunkY)))

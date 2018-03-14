@@ -7,8 +7,7 @@ namespace Terrain.Visuals
 {
   public class ChunkVisual : MonoBehaviour
   {
-    public GameObject[,] tileGO = new GameObject[16, 16];
-    public GameObject[,] maskOutlineGO = new GameObject[16, 16];
+    public GameObject[] tileGO = new GameObject[ChunkData.m_Size * ChunkData.m_Size];
 
     //-----------------------------------------------------------------------------------------------------------//
 
@@ -16,14 +15,14 @@ namespace Terrain.Visuals
     /// Requests new gameObjects from the pool and places them in the correct positions
     /// </summary>
     /// <param name="_tiles"> The data for the tiles </param>
-    public void DrawChunk(TileData[,] _tiles)
+    public void DrawChunk(TileData[] _tiles)
     {
       GameObject _TileType = null;
       for (int _x = 0; _x < ChunkData.m_Size; _x++)
       {
         for (int _y = 0; _y < ChunkData.m_Size; _y++)
         {
-          _TileType = TileDatabase.sharedInstance.FetchTileByID(_tiles[_x, _y].type).gameObject;
+          _TileType = TileDatabase.sharedInstance.FetchTileByID(_tiles[_x + _y * ChunkData.m_Size].type).gameObject;
           _TileType = _TileType.GetComponent<PooledMonobehaviour>().Get<PooledMonobehaviour>().gameObject;
 
           _TileType.transform.position = new Vector3(transform.position.x + _x, transform.position.y + _y, 0);
@@ -32,7 +31,7 @@ namespace Terrain.Visuals
 
           _TileType.transform.parent = transform;
 
-          tileGO[_x, _y] = _TileType;
+          tileGO[_x + _y * ChunkData.m_Size] = _TileType;
 
           WorldLoader.m_Terrain.dirtyTiles.Enqueue(_TileType.GetComponent<TileGOData>());
         }
@@ -86,7 +85,7 @@ namespace Terrain.Visuals
     /// <returns></returns>
     public GameObject GetTileAt(int x, int y)
     {
-      return tileGO[x, y];
+      return tileGO[x + y * ChunkData.m_Size];
     }
 
     //-----------------------------------------------------------------------------------------------------------//
@@ -103,7 +102,7 @@ namespace Terrain.Visuals
       _TileType = TileDatabase.sharedInstance.FetchTileByID(type).gameObject;
       _TileType = _TileType.GetComponent<PooledMonobehaviour>().Get<PooledMonobehaviour>().gameObject;
       _TileType.transform.position = new Vector3(x + transform.position.x, y + transform.position.y, 0);
-      tileGO[x, y] = _TileType;
+      tileGO[x + y * ChunkData.m_Size] = _TileType;
       _TileType.transform.parent = transform;
 
       _TileType.GetComponent<TileGOData>().Place();

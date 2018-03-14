@@ -10,7 +10,7 @@ namespace Terrain.Data
     // Singleton
     public static WorldGeneration m_Terrain;
 
-    public static ChunkData[,] m_ChunkMap;
+    public static ChunkData[] m_ChunkMap;
 
     // InChunks
     public static int worldHeight = 24; //128 for   2048 tiles with size 16
@@ -23,12 +23,12 @@ namespace Terrain.Data
     private void Awake()
     {
       m_Terrain = this;
-      m_ChunkMap = new ChunkData[worldWidth, worldHeight];
-      for (int i = 0; i < worldWidth; i++)
+      m_ChunkMap = new ChunkData[worldWidth * worldHeight];
+      for (int _x = 0; _x < worldWidth; _x++)
       {
-        for (int j = 0; j < worldHeight; j++)
+        for (int _y = 0; _y < worldHeight; _y++)
         {
-          m_ChunkMap[i, j] = new ChunkData(i, j);
+          m_ChunkMap[_x + _y * worldWidth] = new ChunkData(_x, _y);
         }
       }
     }
@@ -282,7 +282,7 @@ namespace Terrain.Data
       int tileX = x % ChunkData.m_Size;
       int tileY = y % ChunkData.m_Size;
 
-      m_ChunkMap[chunkX, chunkY].SetTileAt(tileX, tileY, type);
+      m_ChunkMap[chunkX + chunkY * worldWidth].SetTileAt(tileX, tileY, type);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
@@ -294,7 +294,7 @@ namespace Terrain.Data
       // we need to determine where should we place our tile in the chunk
       int _tileX = x % ChunkData.m_Size;
       int _tileY = y % ChunkData.m_Size;
-      return m_ChunkMap[_chunkX, _chunkY].GetTileAt(_tileX, _tileY);
+      return m_ChunkMap[_chunkX + _chunkY * worldWidth].GetTileAt(_tileX, _tileY);
     }
 
     //-----------------------------------------------------------------------------------------------------------//
